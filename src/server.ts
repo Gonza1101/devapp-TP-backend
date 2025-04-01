@@ -5,10 +5,10 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import process from 'process';
-import { Persona } from './Model/persona';
+import { Persona } from './Model/Persona';
 import { Genero } from './Model/Genero';
 import { Auto } from './Model/Auto';
-import { existePersonsa } from './Service/personaService';
+import { actualizarPersonaConDni, buscarPersonaConDni, existePersonsa, sonDatosValidos } from './Service/personaService';
 
 const auto1 : Auto = {
     marca : 'Ford',
@@ -88,49 +88,46 @@ app. get('/browse',(req,res)=>{
 })
 
 app.get('/read',(req,res)=>{
-
     const reqBody = req.body;
     const reqDniBody = reqBody.dni;
+    const persona = buscarPersonaConDni(listPersona, reqDniBody);
 
-    const personaConDni = listPersona.find(p=>p.dni === reqDniBody)
-
-    if (personaConDni === undefined){
+    if (persona === undefined){
         res.status(404);
         res.json(`No hay Persona Registrada con ${reqDniBody}`)
     }else{
-        res.json(personaConDni);
+        res.json(persona);
+        console.log(typeof(persona.nombre))
         res.status(200)
     }
 });
 
-app.post('/edit', (req, res)=>{
+app.put('/edit', (req, res)=>{
     const idDni = (req.query).toString();
     const reqBody = req.body;
-    const listClavesDelBody = Object.keys(reqBody)
-    const personaCambio = listPersona.find(p=>p.dni === idDni);
-
-    // const cambiarCampo = (clave:string)=>{
-    //     for 
-    // }
-    res.json(personaCambio)
+    const listClavesDelBody:Persona = reqBody;
+    const existe:boolean = existePersonsa(listPersona,idDni);
+    
+    if (!existe){
+        res.status(404)
+        res.json(`La Persona con DNI ${idDni} no se encuentra registrado`)
+    }else{
+        actualizarPersonaConDni(listPersona, idDni,listClavesDelBody)
+    }
 });
 
 app.post('/addPersona',(req,res)=>{
-    const reqBody:Persona= req.body;
-
+    
+    const reqBody: Persona = req.body;
     if (existePersonsa(listPersona, reqBody.dni)){
         res.status(400);
-        res.json("Persona ya existente");
+        res.json(`Usuario con DNI ${reqBody.dni} ya se encuentra registrado`);
     }else{
         listPersona.push(reqBody)
         res.json(`Se agrego a ${reqBody.nombre} con DNI ${reqBody.dni}`)
         res.status(200)
     }
 });
-
-// app.post('/addAuto',(req,res)=>{
-
-// })
 
 app.delete('/delete',(req,res)=>{
     const idDni = (req.query).toString();
