@@ -67,7 +67,7 @@ app.use(bodyParser.json());
 
 // Mis endpoints van acá
 app.get('/',(req,res)=>{
-    res.json('Llegamos')
+    res.json('Llegaste')
 })
 
 app. get('/browse',(req,res)=>{
@@ -142,7 +142,6 @@ app.delete('/delete',(req,res)=>{
     }
 
 })
-
 
 // Levantamos el servidor en el puerto que configuramos
 app.listen(port, () => {
