@@ -1,5 +1,9 @@
 import { Persona } from '../Model/Persona';
 
+export const agregarPersona = (list: Persona[], nuevaPersona: Persona) =>{
+    list.push(nuevaPersona);
+};
+
 export const existePersonsa = (list: Persona[], id: string) => {
     const persona = list.find((p) => p.dni === id);
     if (persona === undefined) {
@@ -22,6 +26,17 @@ export const buscarPersonaConDni = (list: Persona[], id: string) => {
     return personaEncontrada;
 };
 
+export const eliminarPersonaConDni = (list: Persona[], id: string) => {
+    const listSin = list.filter((p) => p.dni !== id);
+    // const indexPersona = list.findIndex((p) => p.dni === id);
+    // const listSin = list.splice(indexPersona, 1);
+    return listSin;
+};
+
 export const actualizarPersonaConDni = (list: Persona[], id: string, dato: Persona) => {
-    const persona = buscarPersonaConDni(list, id);
+    const personasACambiar = buscarPersonaConDni(list, id);
+    const personaActualizada = {...personasACambiar, ...dato};
+    eliminarPersonaConDni(list, id);
+    
+
 };

@@ -8,7 +8,7 @@ import process from 'process';
 import { Persona } from './Model/Persona';
 import { Genero } from './Model/Genero';
 import { Auto } from './Model/Auto';
-import { actualizarPersonaConDni, buscarPersonaConDni, existePersonsa, sonDatosValidos } from './Service/personaService';
+import { actualizarPersonaConDni, agregarPersona, buscarPersonaConDni, eliminarPersonaConDni, existePersonsa, sonDatosValidos } from './Service/personaService';
 
 const auto1 : Auto = {
     marca : 'Ford',
@@ -67,11 +67,20 @@ app.use(bodyParser.json());
 
 // Mis endpoints van acá
 app.get('/',(req,res)=>{
+
+    /*
+        {...objeto} => crea un objeto con todos los campos del objeto
+        {...objeto1,...objeto2} => crea un objeto nuevo sumando los campos del objeto 1 + objeto 2
+                                    si llegara a haber claves iguales se pisan y se guardan las del segundo objeto
+    */
+
     res.json('Llegaste')
 })
 
-app. get('/browse',(req,res)=>{
-    const queryParamDni = (req.query).dni ;
+//BROWSE
+app.get('/personas',(req,res)=>{
+    const queryParamDni = req.query.dni?.toString();
+
     const respuesta = () =>{
         if ( queryParamDni === undefined ){
             const listadoPersonas = {personas: listPersona.map(per => { return ( { dni:per.dni, nombre : per.nombre, apellido : per.apellido, 
@@ -87,7 +96,8 @@ app. get('/browse',(req,res)=>{
     res.status(200);
 })
 
-app.get('/read',(req,res)=>{
+// Read - Busca una persona por DNI
+app.get('/personas/:dni',(req,res)=>{
     const reqBody = req.body;
     const reqDniBody = reqBody.dni;
     const persona = buscarPersonaConDni(listPersona, reqDniBody);
@@ -101,46 +111,49 @@ app.get('/read',(req,res)=>{
         res.status(200)
     }
 });
-
-app.put('/edit', (req, res)=>{
-    const idDni = (req.query).toString();
+// EDIT - Actualiza datos
+app.put('/personas/:dni', (req, res)=>{
+    const idDni = req.params.dni;
     const reqBody = req.body;
-    const listClavesDelBody:Persona = reqBody;
     const existe:boolean = existePersonsa(listPersona,idDni);
     
     if (!existe){
         res.status(404)
         res.json(`La Persona con DNI ${idDni} no se encuentra registrado`)
+    }
+
+    if (sonDatosValidos(reqBody)){ 
+        actualizarPersonaConDni(listPersona, idDni,reqBody);
     }else{
-        actualizarPersonaConDni(listPersona, idDni,listClavesDelBody)
+        res.status(400);
+        res.json('Clasico Error de type')
     }
 });
-
-app.post('/addPersona',(req,res)=>{
+// ADD - Agrega una persona nueva
+app.post('/nuevaPersona',(req,res)=>{
     
     const reqBody: Persona = req.body;
     if (existePersonsa(listPersona, reqBody.dni)){
         res.status(400);
         res.json(`Usuario con DNI ${reqBody.dni} ya se encuentra registrado`);
     }else{
-        listPersona.push(reqBody)
-        res.json(`Se agrego a ${reqBody.nombre} con DNI ${reqBody.dni}`)
-        res.status(200)
+        agregarPersona(listPersona,reqBody);
+        res.json(`Se agrego a ${reqBody.nombre} con DNI ${reqBody.dni}`);
+        res.status(200);
     }
 });
+// DELETE - Eliminar Persona con DNI
+app.delete('/chauPersona/:dni',(req,res)=>{
+    const idDni = req.params.dni;
 
-app.delete('/delete',(req,res)=>{
-    const idDni = (req.query).toString();
-
-    if (existePersonsa(listPersona, idDni)){
+    if (!existePersonsa(listPersona, idDni)){
         res.status(404);
         res.json('No se Puede eliminar a un usuario que no existe')
     }else{
-        listPersona = listPersona.filter(p => p.dni !== idDni);
-        res.status(201);
+        listPersona = eliminarPersonaConDni(listPersona,idDni);
+        res.status(200);
         res.json(listPersona);
     }
-
 })
 
 // Levantamos el servidor en el puerto que configuramos
