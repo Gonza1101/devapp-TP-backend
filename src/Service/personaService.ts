@@ -1,29 +1,49 @@
 import { Persona } from '../Model/Persona';
-
-export const agregarPersona = (list: Persona[], nuevaPersona: Persona) =>{
-    list.push(nuevaPersona);
-};
+// import { listaPersona } from '../Repository/ListadoPersona';
 
 export const existePersonsa = (list: Persona[], id: string) => {
     const persona = list.find((p) => p.dni === id);
-    if (persona === undefined) {
-        return false;
-    } else {
-        return true;
-    }
+    return persona !== undefined;
+};
+
+const esDatoValido = (dato: unknown, tipo: string) => {
+    return typeof dato === tipo || dato === undefined;
+};
+
+const esFechaValida = (fecha: unknown) => {
+    return (
+        fecha === undefined ||
+        (typeof fecha === 'string' && !Number.isNaN(new Date(fecha)) && new Date(fecha) > new Date())
+    );
+};
+
+const esGeneroValido = (genero: unknown) => {
+    return (
+        genero === undefined ||
+        (typeof genero === 'string' &&
+            (genero.toString() === 'masculino' ||
+                genero.toString() === 'femenino' ||
+                genero.toString() === 'noBinario'))
+    );
 };
 
 export const sonDatosValidos = (persona: Persona) => {
-    if (typeof persona.nombre !== 'string' && typeof persona.apellido !== 'string' && typeof persona.dni !== 'string') {
-        return false;
-    } else {
-        return true;
-    }
+    return (
+        esDatoValido(persona.nombre, 'string') &&
+        esDatoValido(persona.apellido, 'string') &&
+        esDatoValido(persona.dni, 'string') &&
+        esFechaValida(persona.fechaNacimiento) &&
+        esGeneroValido(persona.genero)
+    );
 };
 
 export const buscarPersonaConDni = (list: Persona[], id: string) => {
     const personaEncontrada = list.find((p) => p.dni === id);
     return personaEncontrada;
+};
+
+export const agregarPersona = (list: Persona[], nuevaPersona: Persona) => {
+    list.push(nuevaPersona);
 };
 
 export const eliminarPersonaConDni = (list: Persona[], id: string) => {
@@ -35,8 +55,10 @@ export const eliminarPersonaConDni = (list: Persona[], id: string) => {
 
 export const actualizarPersonaConDni = (list: Persona[], id: string, dato: Persona) => {
     const personasACambiar = buscarPersonaConDni(list, id);
-    const personaActualizada = {...personasACambiar, ...dato};
+    console.log(personasACambiar);
     eliminarPersonaConDni(list, id);
-    
-
+    const personaActualizada = { ...personasACambiar, ...dato };
+    console.log(personaActualizada);
+    agregarPersona(list, personaActualizada);
+    return personaActualizada;
 };

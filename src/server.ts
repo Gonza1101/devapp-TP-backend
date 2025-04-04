@@ -8,7 +8,8 @@ import process from 'process';
 import { Persona } from './Model/Persona';
 import { Genero } from './Model/Genero';
 import { Auto } from './Model/Auto';
-import { actualizarPersonaConDni, agregarPersona, buscarPersonaConDni, eliminarPersonaConDni, existePersonsa, sonDatosValidos } from './Service/personaService';
+// import { agregarPersona, buscarPersonaConDni, eliminarPersonaConDni, existePersonsa } from './Service/personaService';
+import { actualizarPersonaConDni, agregarPersona, buscarPersonaConDni, eliminarPersonaConDni, existePersonsa, sonDatosValidos} from './Service/personaService';
 
 const auto1 : Auto = {
     marca : 'Ford',
@@ -34,7 +35,7 @@ const person1 : Persona = {
     nombre : 'Gonzalo',
     apellido : 'Villalba',
     dni : '33423185',
-    fechaNacimiento : new Date(1987-13-12),
+    fechaNacimiento : new Date('1987-12-13'),
     genero: Genero.Masculino,
     esDonante: true,
     autos:[auto1]
@@ -44,30 +45,23 @@ const person2 : Persona = {
     nombre : 'Pam',
     apellido : 'Beesley',
     dni : '35456123',
-    fechaNacimiento : new Date(1988-21-10),
+    fechaNacimiento : new Date('1988-21-10'),
     genero: Genero.Femenino,
     esDonante: false,
     autos : [auto2]
 }
-
 let listPersona : Persona[] =[person1,person2]
-
-
-
 // Creamos nuestra app express
 const app = express();
 // Leemos el puerto de las variables de entorno, si no está, usamos uno por default
 const port = process.env.PORT || 9000;
-
 // Configuramos los plugins
 // Más adelante intentaremos entender mejor cómo funcionan estos plugins
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
-
 // Mis endpoints van acá
 app.get('/',(req,res)=>{
-
     /*
         {...objeto} => crea un objeto con todos los campos del objeto
         {...objeto1,...objeto2} => crea un objeto nuevo sumando los campos del objeto 1 + objeto 2
@@ -76,11 +70,9 @@ app.get('/',(req,res)=>{
 
     res.json('Llegaste')
 })
-
 //BROWSE
 app.get('/personas',(req,res)=>{
     const queryParamDni = req.query.dni?.toString();
-
     const respuesta = () =>{
         if ( queryParamDni === undefined ){
             const listadoPersonas = {personas: listPersona.map(per => { return ( { dni:per.dni, nombre : per.nombre, apellido : per.apellido, 
@@ -97,7 +89,7 @@ app.get('/personas',(req,res)=>{
 })
 
 // Read - Busca una persona por DNI
-app.get('/personas/:dni',(req,res)=>{
+app.get('/personas/dni',(req,res)=>{
     const reqBody = req.body;
     const reqDniBody = reqBody.dni;
     const persona = buscarPersonaConDni(listPersona, reqDniBody);
@@ -121,9 +113,11 @@ app.put('/personas/:dni', (req, res)=>{
         res.status(404)
         res.json(`La Persona con DNI ${idDni} no se encuentra registrado`)
     }
-
     if (sonDatosValidos(reqBody)){ 
-        actualizarPersonaConDni(listPersona, idDni,reqBody);
+        const per = actualizarPersonaConDni(listPersona, idDni,reqBody);
+        
+        res.status(200)
+        res.json(per);
     }else{
         res.status(400);
         res.json('Clasico Error de type')
