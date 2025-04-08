@@ -22,4 +22,4 @@ const person2: Persona = {
     autos: [auto2]
 };
 
-export const listaPersona: Persona[] = [person1, person2];
+export const listaPersonas: Persona[] = [person1, person2];

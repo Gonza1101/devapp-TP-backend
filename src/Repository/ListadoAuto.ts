@@ -19,3 +19,5 @@ export const auto2: Auto = {
     motor: 'prummprum',
     patente: 'frula 969'
 };
+
+export const listaAutos: Auto[] = [auto1, auto2];

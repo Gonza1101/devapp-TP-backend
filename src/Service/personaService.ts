@@ -1,11 +1,39 @@
 import { Persona } from '../Model/Persona';
-// import { listaPersona } from '../Repository/ListadoPersona';
+import { listaPersonas } from '../Repository/ListadoPersona';
+import { personaConDni } from '../Repository/repositorioPersona';
 
-export const existePersonsa = (list: Persona[], id: string) => {
-    const persona = list.find((p) => p.dni === id);
+export const listaDePersonasResumida = () => {
+    const lista = listaPersonas;
+    return {
+        personas: lista.map((per) => {
+            return {
+                dni: per.dni,
+                nombre: per.nombre,
+                apellido: per.apellido,
+                auto: per.autos.map((aut) => {
+                    return { marca: aut.marca, modelo: aut.modelo, patente: aut.patente };
+                })
+            };
+        })
+    };
+};
+
+export const listaDeAutosPorDniPersona = (id: string) => {
+    return {
+        autos: personaConDni(id)?.autos.map((aut) => {
+            return { marca: aut.marca, modelo: aut.modelo, patente: aut.patente };
+        })
+    };
+};
+
+export const existePersonsa = (id: string) => {
+    const persona = personaConDni(id);
     return persona !== undefined;
 };
 
+const esUndefined = (dato: unknown) => {
+    return dato === undefined;
+};
 const esDatoValido = (dato: unknown, tipo: string) => {
     return typeof dato === tipo || dato === undefined;
 };
@@ -27,7 +55,7 @@ const esGeneroValido = (genero: unknown) => {
     );
 };
 
-export const sonDatosValidos = (persona: Persona) => {
+export const sonDatosValidosParaEditar = (persona: Persona) => {
     return (
         esDatoValido(persona.nombre, 'string') &&
         esDatoValido(persona.apellido, 'string') &&
@@ -37,28 +65,27 @@ export const sonDatosValidos = (persona: Persona) => {
     );
 };
 
-export const buscarPersonaConDni = (list: Persona[], id: string) => {
-    const personaEncontrada = list.find((p) => p.dni === id);
-    return personaEncontrada;
+export const buscarPersonaConDni = (id: string) => {
+    return personaConDni(id);
 };
 
-export const agregarPersona = (list: Persona[], nuevaPersona: Persona) => {
-    list.push(nuevaPersona);
+export const agregarPersona = (nuevaPersona: Persona) => {
+    listaPersonas.push(nuevaPersona);
 };
 
-export const eliminarPersonaConDni = (list: Persona[], id: string) => {
-    const listSin = list.filter((p) => p.dni !== id);
+export const eliminarPersonaConDni = (id: string) => {
+    const listSin = listaPersonas.filter((p) => p.dni !== id);
     // const indexPersona = list.findIndex((p) => p.dni === id);
     // const listSin = list.splice(indexPersona, 1);
     return listSin;
 };
 
-export const actualizarPersonaConDni = (list: Persona[], id: string, dato: Persona) => {
-    const personasACambiar = buscarPersonaConDni(list, id);
+export const actualizarPersonaConDni = (id: string, dato: Persona) => {
+    const personasACambiar = buscarPersonaConDni(id);
     console.log(personasACambiar);
-    eliminarPersonaConDni(list, id);
+    eliminarPersonaConDni(id);
     const personaActualizada = { ...personasACambiar, ...dato };
     console.log(personaActualizada);
-    agregarPersona(list, personaActualizada);
+    agregarPersona(personaActualizada);
     return personaActualizada;
 };

@@ -6,51 +6,9 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import process from 'process';
 import { Persona } from './Model/Persona';
-import { Genero } from './Model/Genero';
-import { Auto } from './Model/Auto';
-// import { agregarPersona, buscarPersonaConDni, eliminarPersonaConDni, existePersonsa } from './Service/personaService';
-import { actualizarPersonaConDni, agregarPersona, buscarPersonaConDni, eliminarPersonaConDni, existePersonsa, sonDatosValidos} from './Service/personaService';
+import { agregarPersona, buscarPersonaConDni, eliminarPersonaConDni, existePersonsa, sonDatosValidosParaEditar } from './Service/personaService';
+import { listAutosDePersonaConDni, obtenerListaPersonas } from './Controller/personaController';
 
-const auto1 : Auto = {
-    marca : 'Ford',
-    modelo : 'Taunus',
-    anio : 1975,
-    color : 'Naranja',
-    numeroChasis : 'fotaus75123',
-    motor : 'rumrrrum',
-    patente : 'thc 420'
-}
-
-const auto2 : Auto = {
-    marca : 'Chevrolet',
-    modelo : 'Chevi',
-    anio : 1965,
-    color : 'Dorado',
-    numeroChasis : 'chevchevi423',
-    motor : 'prummprum',
-    patente : 'frula 969'
-}
-
-const person1 : Persona = {
-    nombre : 'Gonzalo',
-    apellido : 'Villalba',
-    dni : '33423185',
-    fechaNacimiento : new Date('1987-12-13'),
-    genero: Genero.Masculino,
-    esDonante: true,
-    autos:[auto1]
-}
-
-const person2 : Persona = {
-    nombre : 'Pam',
-    apellido : 'Beesley',
-    dni : '35456123',
-    fechaNacimiento : new Date('1988-21-10'),
-    genero: Genero.Femenino,
-    esDonante: false,
-    autos : [auto2]
-}
-let listPersona : Persona[] =[person1,person2]
 // Creamos nuestra app express
 const app = express();
 // Leemos el puerto de las variables de entorno, si no está, usamos uno por default
@@ -60,6 +18,7 @@ const port = process.env.PORT || 9000;
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
+
 // Mis endpoints van acá
 app.get('/',(req,res)=>{
     /*
@@ -70,21 +29,13 @@ app.get('/',(req,res)=>{
 
     res.json('Llegaste')
 })
-//BROWSE
+//BROWSE 
+// app.get('/personas', personaController.agregar);
+
 app.get('/personas',(req,res)=>{
     const queryParamDni = req.query.dni?.toString();
-    const respuesta = () =>{
-        if ( queryParamDni === undefined ){
-            const listadoPersonas = {personas: listPersona.map(per => { return ( { dni:per.dni, nombre : per.nombre, apellido : per.apellido, 
-                                                                                    auto : per.autos.map(aut=>{return({marca: aut.marca, modelo: aut.modelo, patente: aut.patente })})
-                                                                                 } ) } )};
-           return listadoPersonas
-        }else {
-            const listaDeAutosDeDNi = {Autos: (listPersona.find(p=> p.dni === queryParamDni))?.autos.map(aut=>{return({marca: aut.marca, modelo: aut.modelo, patente: aut.patente })})} 
-            return listaDeAutosDeDNi
-        }
-    };
-    res.json(respuesta());
+    const rta = queryParamDni ===undefined ? obtenerListaPersonas : listAutosDePersonaConDni(queryParamDni);
+    res.json(rta);
     res.status(200);
 })
 
@@ -92,7 +43,7 @@ app.get('/personas',(req,res)=>{
 app.get('/personas/dni',(req,res)=>{
     const reqBody = req.body;
     const reqDniBody = reqBody.dni;
-    const persona = buscarPersonaConDni(listPersona, reqDniBody);
+    const persona = buscarPersonaConDni(reqDniBody);
 
     if (persona === undefined){
         res.status(404);
@@ -103,18 +54,19 @@ app.get('/personas/dni',(req,res)=>{
         res.status(200)
     }
 });
+
 // EDIT - Actualiza datos
 app.put('/personas/:dni', (req, res)=>{
     const idDni = req.params.dni;
     const reqBody = req.body;
-    const existe:boolean = existePersonsa(listPersona,idDni);
+    const existe:boolean = existePersonsa(idDni);
     
     if (!existe){
         res.status(404)
         res.json(`La Persona con DNI ${idDni} no se encuentra registrado`)
     }
-    if (sonDatosValidos(reqBody)){ 
-        const per = actualizarPersonaConDni(listPersona, idDni,reqBody);
+    if (sonDatosValidosParaEditar(reqBody)){ 
+        const per = actualizarPersonaConDni( idDni,reqBody);
         
         res.status(200)
         res.json(per);
@@ -123,15 +75,17 @@ app.put('/personas/:dni', (req, res)=>{
         res.json('Clasico Error de type')
     }
 });
+
 // ADD - Agrega una persona nueva
 app.post('/nuevaPersona',(req,res)=>{
     
     const reqBody: Persona = req.body;
-    if (existePersonsa(listPersona, reqBody.dni)){
+    if (existePersonsa(reqBody.dni)){
         res.status(400);
         res.json(`Usuario con DNI ${reqBody.dni} ya se encuentra registrado`);
     }else{
-        agregarPersona(listPersona,reqBody);
+
+        agregarPersona(reqBody);
         res.json(`Se agrego a ${reqBody.nombre} con DNI ${reqBody.dni}`);
         res.status(200);
     }
@@ -140,11 +94,11 @@ app.post('/nuevaPersona',(req,res)=>{
 app.delete('/chauPersona/:dni',(req,res)=>{
     const idDni = req.params.dni;
 
-    if (!existePersonsa(listPersona, idDni)){
+    if (!existePersonsa(idDni)){
         res.status(404);
         res.json('No se Puede eliminar a un usuario que no existe')
     }else{
-        listPersona = eliminarPersonaConDni(listPersona,idDni);
+        listPersona = eliminarPersonaConDni(idDni);
         res.status(200);
         res.json(listPersona);
     }
