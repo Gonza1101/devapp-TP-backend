@@ -1,9 +1,11 @@
-import { listaPersonas } from './ListadoPersona';
+import { listaPersonas } from '../database/ListadoPersona';
 
-export const listaDePersonas = () => {
+const listaDePersonas = () => {
     return { personas: listaPersonas };
 };
 
-export const personaConDni = (id: string) => {
+const personaConDni = (id: string) => {
     return listaPersonas.find((p) => id === p.dni);
 };
+
+export default { listaDePersonas, personaConDni };

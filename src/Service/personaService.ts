@@ -1,11 +1,10 @@
 import { Persona } from '../Model/Persona';
-import { listaPersonas } from '../Repository/ListadoPersona';
-import { personaConDni } from '../Repository/repositorioPersona';
+import repositorioPersona from '../Repository/repositorioPersona';
 
-export const listaDePersonasResumida = () => {
-    const lista = listaPersonas;
+const listadoDePersonas = () => {
+    const lista = repositorioPersona.listaDePersonas();
     return {
-        personas: lista.map((per) => {
+        personas: lista.personas.map((per) => {
             return {
                 dni: per.dni,
                 nombre: per.nombre,
@@ -18,69 +17,38 @@ export const listaDePersonasResumida = () => {
     };
 };
 
-export const listaDeAutosPorDniPersona = (id: string) => {
+const listaDeAutosDePersonaConDni = (id: string) => {
     return {
-        autos: personaConDni(id)?.autos.map((aut) => {
+        autos: repositorioPersona.personaConDni(id)?.autos.map((aut) => {
             return { marca: aut.marca, modelo: aut.modelo, patente: aut.patente };
         })
     };
 };
 
-export const existePersonsa = (id: string) => {
-    const persona = personaConDni(id);
+const buscarPersonaConDni = (id: string) => {
+    return repositorioPersona.personaConDni(id);
+};
+
+const existePersonsa = (id: string) => {
+    const persona = repositorioPersona.personaConDni(id);
     return persona !== undefined;
 };
+// const esUndefined = (dato: unknown) => {
+//     return dato === undefined;
+// };
 
-const esUndefined = (dato: unknown) => {
-    return dato === undefined;
-};
-const esDatoValido = (dato: unknown, tipo: string) => {
-    return typeof dato === tipo || dato === undefined;
-};
-
-const esFechaValida = (fecha: unknown) => {
-    return (
-        fecha === undefined ||
-        (typeof fecha === 'string' && !Number.isNaN(new Date(fecha)) && new Date(fecha) > new Date())
-    );
+const agregarPersona = (nuevaPersona: Persona) => {
+    repositorioPersona.listaDePersonas().personas.push(nuevaPersona);
 };
 
-const esGeneroValido = (genero: unknown) => {
-    return (
-        genero === undefined ||
-        (typeof genero === 'string' &&
-            (genero.toString() === 'masculino' ||
-                genero.toString() === 'femenino' ||
-                genero.toString() === 'noBinario'))
-    );
-};
-
-export const sonDatosValidosParaEditar = (persona: Persona) => {
-    return (
-        esDatoValido(persona.nombre, 'string') &&
-        esDatoValido(persona.apellido, 'string') &&
-        esDatoValido(persona.dni, 'string') &&
-        esFechaValida(persona.fechaNacimiento) &&
-        esGeneroValido(persona.genero)
-    );
-};
-
-export const buscarPersonaConDni = (id: string) => {
-    return personaConDni(id);
-};
-
-export const agregarPersona = (nuevaPersona: Persona) => {
-    listaPersonas.push(nuevaPersona);
-};
-
-export const eliminarPersonaConDni = (id: string) => {
-    const listSin = listaPersonas.filter((p) => p.dni !== id);
+const eliminarPersonaConDni = (id: string) => {
+    const listSin = repositorioPersona.listaDePersonas().personas.filter((p) => p.dni !== id);
     // const indexPersona = list.findIndex((p) => p.dni === id);
     // const listSin = list.splice(indexPersona, 1);
     return listSin;
 };
 
-export const actualizarPersonaConDni = (id: string, dato: Persona) => {
+const actualizarPersonaConDni = (id: string, dato: Persona) => {
     const personasACambiar = buscarPersonaConDni(id);
     console.log(personasACambiar);
     eliminarPersonaConDni(id);
@@ -88,4 +56,14 @@ export const actualizarPersonaConDni = (id: string, dato: Persona) => {
     console.log(personaActualizada);
     agregarPersona(personaActualizada);
     return personaActualizada;
+};
+
+export default {
+    listadoDePersonas,
+    listaDeAutosDePersonaConDni,
+    buscarPersonaConDni,
+    existePersonsa,
+    agregarPersona,
+    actualizarPersonaConDni,
+    eliminarPersonaConDni
 };
