@@ -33,6 +33,10 @@ app.get('/personas',(req, res) => {
     personaController.browser(req, res);
 });
 
+app.get('/autos',(req, res) => {
+    personaController.browser(req, res);
+});
+
 // Read - Busca una persona por DNI
 app.get('/persona/dni',(req,res)=>{
     personaController.read(req, res);

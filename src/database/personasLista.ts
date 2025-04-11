@@ -1,6 +1,6 @@
 import { Persona } from '../Model/Persona';
 import { Genero } from '../Model/Genero';
-import { auto1, auto2 } from './ListadoAuto';
+import autoLista from './autoLista';
 
 const person1: Persona = {
     nombre: 'Gonzalo',
@@ -9,7 +9,7 @@ const person1: Persona = {
     fechaNacimiento: new Date(1987 - 13 - 12),
     genero: Genero.Masculino,
     esDonante: true,
-    autos: [auto1]
+    autos: [autoLista.auto1]
 };
 
 const person2: Persona = {
@@ -19,7 +19,7 @@ const person2: Persona = {
     fechaNacimiento: new Date(1988 - 1 - 10),
     genero: Genero.Femenino,
     esDonante: false,
-    autos: [auto2]
+    autos: [autoLista.auto2]
 };
 
 export const listaPersonas: Persona[] = [person1, person2];

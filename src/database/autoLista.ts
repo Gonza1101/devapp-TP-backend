@@ -1,6 +1,6 @@
 import { Auto } from '../Model/Auto';
 
-export const auto1: Auto = {
+const auto1: Auto = {
     marca: 'Ford',
     modelo: 'Taunus',
     anio: 1975,
@@ -10,7 +10,7 @@ export const auto1: Auto = {
     patente: 'thc 420'
 };
 
-export const auto2: Auto = {
+const auto2: Auto = {
     marca: 'Chevrolet',
     modelo: 'Chevi',
     anio: 1965,
@@ -20,4 +20,6 @@ export const auto2: Auto = {
     patente: 'frula 969'
 };
 
-export const listaAutos: Auto[] = [auto1, auto2];
+const listaAuto: Auto[] = [auto1, auto2];
+
+export default { listaAuto, auto1, auto2 };

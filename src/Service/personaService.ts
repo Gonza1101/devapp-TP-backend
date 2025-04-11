@@ -1,5 +1,5 @@
 import { Persona } from '../Model/Persona';
-import repositorioPersona from '../Repository/repositorioPersona';
+import repositorioPersona from '../Repository/personasRepository';
 
 const listadoDePersonas = () => {
     const lista = repositorioPersona.listaDePersonas();

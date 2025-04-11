@@ -1,4 +1,4 @@
-import { listaPersonas } from '../database/ListadoPersona';
+import { listaPersonas } from '../database/personasLista';
 
 const listaDePersonas = () => {
     return { personas: listaPersonas };
