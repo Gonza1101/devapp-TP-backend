@@ -1,5 +1,6 @@
 export interface Auto {
-    //dniDueño:String;
+    id: string;
+    dniDueño: string;
     marca: string;
     modelo: string;
     anio: number;

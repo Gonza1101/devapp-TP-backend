@@ -2,62 +2,65 @@ import { Request, Response } from 'express';
 import autoService from '../Service/autoService';
 import validaciones from '../Helper/validaciones';
 
+//BROWSER
 const browser = (req: Request, res: Response) => {
-    const autos = autoService.listar();
+    const autos = autoService.listado();
+    //TODO cambialo para que devuelva un autoDto o algo parecido
     res.json(autos);
     res.status(200);
 };
-
+//READ
 const read = (req: Request, res: Response) => {
-    const persona = autoService.buscarAutoConid(req.body.dni);
-    if (persona === undefined) {
+    //TODO lo que me lllega lo valido si es una patente;
+    const auto = autoService.busquedaDeAutoConPatente(req.body.patente);
+    if (auto === undefined) {
         res.status(404);
-        res.json(`No hay Persona Registrada con ${req.body.dni}`);
+        res.json(`NO existe tal AUTO con Patente ${req.body.patente}`);
     }
-    res.json(persona);
+    res.json(auto);
     res.status(200);
 };
-
+//EDIT
 const edit = (req: Request, res: Response) => {
-    const idDni = req.params.dni;
-    const reqBody = req.body;
-    const existe: boolean = autoService.existePersonsa(idDni);
-    if (!existe) {
-        res.status(404);
-        res.json(`La Persona con DNI ${idDni} no se encuentra registrado`);
-    }
-    if (validaciones.sonDatosValidosParaEditar(reqBody)) {
-        const per = autoService.actualizarPersonaConDni(idDni, reqBody);
-        res.status(200);
-        res.json(per);
-    } else {
+    const autoEdit = req.body;
+    if (!validaciones.sonDatosValidosParaEditar(autoEdit)) {
         res.status(400);
         res.json('Clasico Error de type');
     }
-};
-
-const add = (req: Request, res: Response) => {
-    const reqBody = req.body; // TODO implementar DTO
-    if (autoService.existePersonsa(reqBody.dni)) {
-        res.status(400);
-        res.json(`Usuario con DNI ${reqBody.dni} ya se encuentra registrado`);
-    } else {
-        autoService.agregarPersona(reqBody);
-        res.json(`Se agrego a ${reqBody.nombre} con DNI ${reqBody.dni}`);
-        res.status(200);
-    }
-};
-
-const delet = (req: Request, res: Response) => {
-    const idDni = req.params.dni;
-    if (!personaService.existePersonsa(idDni)) {
+    //TODO cambiar a autoDto para devolcerlo al frontend
+    const autoEditado = autoService.modificaAuto(autoEdit);
+    if (autoEdit === undefined) {
         res.status(404);
-        res.json('No se Puede eliminar a un usuario que no existe');
-    } else {
-        const list = personaService.eliminarPersonaConDni(idDni);
-        res.status(200);
-        res.json(list);
+        res.json('Auto invalido para su modificacion');
     }
+    res.status(400);
+    res.json(autoEditado);
+};
+//ADD
+const add = (req: Request, res: Response) => {
+    const autoAdd = req.body; // TODO implementar DTO
+    if (!validaciones.sonDatosValidosParaEditar(autoAdd)) {
+        res.status(400);
+        res.json('Clasico Error de type');
+    }
+    const autoAgregado = autoService.agregaAutoNuevo(autoAdd);
+    if (autoAgregado === undefined) {
+        res.status(400);
+        res.json('Auto invalido para Agregar');
+    }
+    res.status(200);
+    res.json(`Se agrego el auto con patente ${autoAgregado?.id}`);
+};
+//DELETES
+const delet = (req: Request, res: Response) => {
+    const patente = req.params.patente;
+    const eliminado = autoService.eliminaAuto(patente);
+    if (eliminado === undefined) {
+        res.status(404);
+        res.json('No existe auto para ser eliminado');
+    }
+    res.status(200);
+    res.json(eliminado);
 };
 
 export default { browser, read, edit, add, delet };

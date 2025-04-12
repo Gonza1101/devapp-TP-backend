@@ -1,6 +1,6 @@
 import { Persona } from '../Model/Persona';
 import { Genero } from '../Model/Genero';
-import autoLista from './autoLista';
+import autoLista from './autoDB';
 
 const person1: Persona = {
     nombre: 'Gonzalo',
