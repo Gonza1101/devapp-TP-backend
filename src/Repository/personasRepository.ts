@@ -15,7 +15,7 @@ const personaConId = (idPersona: string) => {
 
 const idPersonaConDni = (dniPersona: string) => {
     return personaConDni(dniPersona)?.id;
-}
+};
 
 const agregarPersona = (personaNueva: Persona) => {
     personasDB.listaPersonas.push(personaNueva);

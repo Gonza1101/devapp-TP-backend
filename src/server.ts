@@ -11,6 +11,7 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import process from 'process';
 import personaController from './Controller/personaController';
+import autoController from './Controller/autoController';
 // Creamos nuestra app express
 const app = express();
 // Leemos el puerto de las variables de entorno, si no está, usamos uno por default
@@ -30,23 +31,23 @@ app.get('/personas', (req, res) => {
     personaController.browser(req, res);
 });
 app.get('/autos', (req, res) => {
-    personaController.browser(req, res);
+    autoController.browser(req, res);
 });
 
-// Read -
+// READ -
 app.get('/persona/dni', (req, res) => {
     personaController.read(req, res);
 });
-app.get('/autos/patente', (req, res) => {
-    personaController.read(req, res);
+app.get('/auto/patente', (req, res) => {
+    autoController.read(req, res);
 });
 
 // EDIT -
 app.put('/persona/:dni', (req, res) => {
     personaController.edit(req, res);
 });
-app.put('/autos/:patentes', (req, res) => {
-    personaController.edit(req, res);
+app.put('/auto/:id', (req, res) => {
+    autoController.edit(req, res);
 });
 
 // ADD -
@@ -54,15 +55,15 @@ app.post('/persona', (req, res) => {
     personaController.add(req, res);
 });
 app.post('/auto', (req, res) => {
-    personaController.add(req, res);
+    autoController.add(req, res);
 });
 
 //DELETE -
 app.delete('/persona/:dni', (req, res) => {
     personaController.delet(req, res);
 });
-app.delete('/auto/:patente', (req, res) => {
-    personaController.delet(req, res);
+app.delete('/auto/:id', (req, res) => {
+    autoController.delet(req, res);
 });
 
 // Levantamos el servidor en el puerto que configuramos

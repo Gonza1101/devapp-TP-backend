@@ -2,7 +2,7 @@ import autoDB from '../DataBase/autoDB';
 import { Auto } from '../Model/Auto';
 
 const listadoDeAuto = () => {
-    return autoDB.listaAuto;
+    return { autos: autoDB.listaAuto };
 };
 
 const idDeAutoConPatente = (patente: string) => {

@@ -6,12 +6,13 @@ const browser = (req: Request, res: Response) => {
     const dni = req.query.dni?.toString();
     if (dni !== undefined) {
         const autosDe = personaService.listaDeAutosDePersonaConDni(dni);
-        res.json(autosDe);
         res.status(200);
+        res.json(autosDe);
+    } else {
+        const personas = personaService.listadoDePersonas();
+        res.status(200);
+        res.json(personas);
     }
-    const personas = personaService.listadoDePersonas();
-    res.json(personas);
-    res.status(200);
 };
 //READ
 const read = (req: Request, res: Response) => {
@@ -20,8 +21,8 @@ const read = (req: Request, res: Response) => {
         res.status(404);
         res.json(`No hay Persona Registrada con ${req.body.dni}`);
     }
-    res.json(persona);
     res.status(200);
+    res.json(persona);
 };
 //EDIT
 const edit = (req: Request, res: Response) => {
@@ -29,7 +30,7 @@ const edit = (req: Request, res: Response) => {
         res.status(400);
         res.json('Datos incorrectos');
     }
-    const persona = personaService.modificaPersona(req.params.id, req.body);
+    const persona = personaService.modificaPersona(req.params.dni, req.body);
     if (persona === undefined) {
         res.status(404);
         res.json(`La Persona no se encuentra registrado`);
@@ -49,7 +50,7 @@ const add = (req: Request, res: Response) => {
         res.status(400);
         res.json(`Usuario con DNI ${req.body.dni} ya se encuentra registrado`);
     }
-    res.json(`Se agrego a ${req.body.nombre} con DNI ${req.body.dni}`);
+    res.json(`Se agrego una Persona`);
     res.status(200);
 };
 //DELETE

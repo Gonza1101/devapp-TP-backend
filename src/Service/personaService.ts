@@ -34,40 +34,27 @@ const busquedaDePersonaConId = (idPersona: string) => {
 };
 
 const agregarPersona = (personaNueva: Persona) => {
-    const idAuto = personasRepository.idPersonaConDni(personaNueva.dni);
-    if (!idAuto) {
-        try {
-            personasRepository.agregarPersona(personaNueva);
-            return personasRepository.personaConDni(personaNueva.dni);
-        } catch (error) {
-            console.log(error);
-            return undefined;
-        }
+    if (!personasRepository.idPersonaConDni(personaNueva.dni)) {
+        personasRepository.agregarPersona(personaNueva);
+        return personasRepository.personaConDni(personaNueva.dni);
     }
     return undefined;
 };
 
-const modificaPersona = (idPersona: string, datosNuevos: Persona) => {
-    const personasAModificar = personasRepository.personaConId(idPersona);
-    const personaModificada = { ...personasAModificar, ...datosNuevos };
-    try {
-        personasRepository.eliminaPersona(idPersona);
-        personasRepository.agregarPersona(personaModificada);
-        return personaModificada;
-    } catch (error) {
-        console.log(error);
-        return undefined;
+const modificaPersona = (dniPersona: string, datosNuevos: Persona) => {
+    //TODO estoy modificando por dni me gustaria hacerlo con id;
+    const personasAModificar = personasRepository.personaConDni(dniPersona);
+    if (personasAModificar !== undefined) {
+        personasRepository.eliminaPersona(dniPersona);
+        personasRepository.agregarPersona({ ...personasAModificar, ...datosNuevos });
+        return { ...personasAModificar, ...datosNuevos };
     }
+    return undefined;
 };
 
-const eliminarPersonaConDni = (idPersona: string) => {
-    if (personasRepository.personaConId(idPersona)) {
-        try {
-            return personasRepository.eliminaPersona(idPersona);
-        } catch (error) {
-            console.log(error);
-            return undefined;
-        }
+const eliminarPersonaConDni = (dniPersona: string) => {
+    if (personasRepository.personaConDni(dniPersona)) {
+        return personasRepository.eliminaPersona(dniPersona);
     }
     return undefined;
 };

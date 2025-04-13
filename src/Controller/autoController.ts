@@ -4,10 +4,9 @@ import validaciones from '../Helper/validaciones';
 
 //BROWSER
 const browser = (req: Request, res: Response) => {
-    const autos = autoService.listado();
-    //TODO cambialo para que devuelva un autoDto o algo parecido
-    res.json(autos);
+    //TODO cambialo para que devuelva un autoDto o ago parecido
     res.status(200);
+    res.json(autoService.listado());
 };
 //READ
 const read = (req: Request, res: Response) => {
@@ -27,12 +26,12 @@ const edit = (req: Request, res: Response) => {
         res.json('Clasico Error de type');
     }
     //TODO cambiar a autoDto para devolcerlo al frontend
-    const autoEditado = autoService.modificaAuto(req.body);
+    const autoEditado = autoService.modificaAuto(req.params.id, req.body);
     if (autoEditado === undefined) {
         res.status(404);
         res.json('Auto invalido para su modificacion');
     }
-    res.status(400);
+    res.status(200);
     res.json(autoEditado);
 };
 //ADD
@@ -42,7 +41,7 @@ const add = (req: Request, res: Response) => {
         res.status(400);
         res.json('Clasico Error de type');
     }
-    const autoAgregado = autoService.agregaAutoNuevo(autoAdd);
+    const autoAgregado = autoService.agregaAuto(autoAdd);
     if (autoAgregado === undefined) {
         res.status(400);
         res.json('Auto invalido para Agregar');
@@ -52,7 +51,7 @@ const add = (req: Request, res: Response) => {
 };
 //DELETES
 const delet = (req: Request, res: Response) => {
-    const eliminado = autoService.eliminaAuto(req.params.patente);
+    const eliminado = autoService.eliminaAuto(req.params.id);
     if (eliminado === undefined) {
         res.status(404);
         res.json('No existe auto para ser eliminado');
