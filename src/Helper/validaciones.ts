@@ -1,4 +1,5 @@
 import { Persona } from '../Model/Persona';
+import { Auto } from '../Model/Auto';
 
 const esDatoValido = (dato: unknown, tipo: string) => {
     return typeof dato === tipo || dato === undefined;
@@ -21,7 +22,7 @@ const esGeneroValido = (genero: unknown) => {
     );
 };
 
-const sonDatosValidosParaEditar = (persona: Persona) => {
+const sonDatosValidosDePersona = (persona: Persona) => {
     return (
         esDatoValido(persona.nombre, 'string') &&
         esDatoValido(persona.apellido, 'string') &&
@@ -31,4 +32,17 @@ const sonDatosValidosParaEditar = (persona: Persona) => {
     );
 };
 
-export default { esDatoValido, esFechaValida, esGeneroValido, sonDatosValidosParaEditar };
+const sonDatosValidosDeAuto = (auto: Auto) => {
+    return (
+        esDatoValido(auto.dniDueño, 'string') &&
+        esDatoValido(auto.marca, 'string') &&
+        esDatoValido(auto.modelo, 'string') &&
+        esDatoValido(auto.anio, 'number') &&
+        esDatoValido(auto.color, 'string') &&
+        esDatoValido(auto.numeroChasis, 'string') &&
+        esDatoValido(auto.motor, 'string') &&
+        esDatoValido(auto.patente, 'string')
+    );
+};
+
+export default { esDatoValido, esFechaValida, esGeneroValido, sonDatosValidosDePersona, sonDatosValidosDeAuto };

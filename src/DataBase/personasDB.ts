@@ -3,6 +3,7 @@ import { Genero } from '../Model/Genero';
 import autoLista from './autoDB';
 
 const person1: Persona = {
+    id: 'gonzalovillalba33423185',
     nombre: 'Gonzalo',
     apellido: 'Villalba',
     dni: '33423185',
@@ -13,6 +14,7 @@ const person1: Persona = {
 };
 
 const person2: Persona = {
+    id: 'pambeesley33456123',
     nombre: 'Pam',
     apellido: 'Beesley',
     dni: '35456123',
@@ -22,4 +24,6 @@ const person2: Persona = {
     autos: [autoLista.auto2]
 };
 
-export const listaPersonas: Persona[] = [person1, person2];
+const listaPersonas: Persona[] = [person1, person2];
+
+export default { listaPersonas };

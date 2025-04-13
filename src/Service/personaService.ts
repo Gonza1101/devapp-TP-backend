@@ -1,8 +1,8 @@
 import { Persona } from '../Model/Persona';
-import repositorioPersona from '../Repository/personasRepository';
+import personasRepository from '../Repository/personasRepository';
 
 const listadoDePersonas = () => {
-    const lista = repositorioPersona.listaDePersonas();
+    const lista = personasRepository.listadoPersonas();
     return {
         personas: lista.personas.map((per) => {
             return {
@@ -19,51 +19,65 @@ const listadoDePersonas = () => {
 
 const listaDeAutosDePersonaConDni = (id: string) => {
     return {
-        autos: repositorioPersona.personaConDni(id)?.autos.map((aut) => {
+        autos: personasRepository.personaConDni(id)?.autos.map((aut) => {
             return { marca: aut.marca, modelo: aut.modelo, patente: aut.patente };
         })
     };
 };
 
-const buscarPersonaConDni = (id: string) => {
-    return repositorioPersona.personaConDni(id);
+const busquedaDePersonaConDni = (dniPersona: string) => {
+    return personasRepository.personaConDni(dniPersona);
 };
 
-const existePersonsa = (id: string) => {
-    const persona = repositorioPersona.personaConDni(id);
-    return persona !== undefined;
-};
-// const esUndefined = (dato: unknown) => {
-//     return dato === undefined;
-// };
-
-const agregarPersona = (nuevaPersona: Persona) => {
-    repositorioPersona.listaDePersonas().personas.push(nuevaPersona);
+const busquedaDePersonaConId = (idPersona: string) => {
+    return personasRepository.personaConDni(idPersona);
 };
 
-const eliminarPersonaConDni = (id: string) => {
-    const listSin = repositorioPersona.listaDePersonas().personas.filter((p) => p.dni !== id);
-    // const indexPersona = list.findIndex((p) => p.dni === id);
-    // const listSin = list.splice(indexPersona, 1);
-    return listSin;
+const agregarPersona = (personaNueva: Persona) => {
+    const idAuto = personasRepository.idPersonaConDni(personaNueva.dni);
+    if (!idAuto) {
+        try {
+            personasRepository.agregarPersona(personaNueva);
+            return personasRepository.personaConDni(personaNueva.dni);
+        } catch (error) {
+            console.log(error);
+            return undefined;
+        }
+    }
+    return undefined;
 };
 
-const actualizarPersonaConDni = (id: string, dato: Persona) => {
-    const personasACambiar = buscarPersonaConDni(id);
-    console.log(personasACambiar);
-    eliminarPersonaConDni(id);
-    const personaActualizada = { ...personasACambiar, ...dato };
-    console.log(personaActualizada);
-    agregarPersona(personaActualizada);
-    return personaActualizada;
+const modificaPersona = (idPersona: string, datosNuevos: Persona) => {
+    const personasAModificar = personasRepository.personaConId(idPersona);
+    const personaModificada = { ...personasAModificar, ...datosNuevos };
+    try {
+        personasRepository.eliminaPersona(idPersona);
+        personasRepository.agregarPersona(personaModificada);
+        return personaModificada;
+    } catch (error) {
+        console.log(error);
+        return undefined;
+    }
+};
+
+const eliminarPersonaConDni = (idPersona: string) => {
+    if (personasRepository.personaConId(idPersona)) {
+        try {
+            return personasRepository.eliminaPersona(idPersona);
+        } catch (error) {
+            console.log(error);
+            return undefined;
+        }
+    }
+    return undefined;
 };
 
 export default {
     listadoDePersonas,
     listaDeAutosDePersonaConDni,
-    buscarPersonaConDni,
-    existePersonsa,
+    busquedaDePersonaConDni,
+    busquedaDePersonaConId,
     agregarPersona,
-    actualizarPersonaConDni,
+    modificaPersona,
     eliminarPersonaConDni
 };

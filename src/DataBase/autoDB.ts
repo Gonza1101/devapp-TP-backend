@@ -14,7 +14,7 @@ const auto1: Auto = {
 
 const auto2: Auto = {
     id: 'chevrolet404frula',
-    dniDueño: '35456123',
+    dniDueño: '33456123',
     marca: 'Chevrolet',
     modelo: '404',
     anio: 1965,

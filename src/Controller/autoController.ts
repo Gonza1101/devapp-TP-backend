@@ -22,14 +22,13 @@ const read = (req: Request, res: Response) => {
 };
 //EDIT
 const edit = (req: Request, res: Response) => {
-    const autoEdit = req.body;
-    if (!validaciones.sonDatosValidosParaEditar(autoEdit)) {
+    if (!validaciones.sonDatosValidosDeAuto(req.body)) {
         res.status(400);
         res.json('Clasico Error de type');
     }
     //TODO cambiar a autoDto para devolcerlo al frontend
-    const autoEditado = autoService.modificaAuto(autoEdit);
-    if (autoEdit === undefined) {
+    const autoEditado = autoService.modificaAuto(req.body);
+    if (autoEditado === undefined) {
         res.status(404);
         res.json('Auto invalido para su modificacion');
     }
@@ -39,7 +38,7 @@ const edit = (req: Request, res: Response) => {
 //ADD
 const add = (req: Request, res: Response) => {
     const autoAdd = req.body; // TODO implementar DTO
-    if (!validaciones.sonDatosValidosParaEditar(autoAdd)) {
+    if (!validaciones.sonDatosValidosDeAuto(autoAdd)) {
         res.status(400);
         res.json('Clasico Error de type');
     }
@@ -53,8 +52,7 @@ const add = (req: Request, res: Response) => {
 };
 //DELETES
 const delet = (req: Request, res: Response) => {
-    const patente = req.params.patente;
-    const eliminado = autoService.eliminaAuto(patente);
+    const eliminado = autoService.eliminaAuto(req.params.patente);
     if (eliminado === undefined) {
         res.status(404);
         res.json('No existe auto para ser eliminado');

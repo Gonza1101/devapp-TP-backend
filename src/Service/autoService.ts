@@ -4,16 +4,13 @@ import autoRepository from '../Repository/autoRepository';
 const listado = () => {
     return autoRepository.listadoDeAuto;
 };
-
 const busquedaDeAutoConPatente = (patente: string) => {
     return autoRepository.autoConPatente(patente);
 };
-
 const modificaAuto = (autoEdit: Auto) => {
     //TODO tiene que llegar un autoDTO no un tipo Auto;
-    const datosNuevos = autoEdit;
     const autoAModificar = autoRepository.autoConId(autoEdit.id);
-    const autoModificado = { ...autoAModificar, ...datosNuevos };
+    const autoModificado = { ...autoAModificar, ...autoEdit };
     try {
         autoRepository.borraAuto(autoAModificar!.id);
         autoRepository.agregaAuto(autoModificado);
@@ -22,28 +19,30 @@ const modificaAuto = (autoEdit: Auto) => {
         console.log(error);
         return undefined;
     }
-    autoRepository.borraAuto(autoAModificar!.id);
-    autoRepository.agregaAuto(autoModificado);
 };
 //TODO tiene que llegar un tipo autoDTO;
-const agregaAutoNuevo = (autoNuevo : Auto) => {
-    try {
-        autoRepository.agregaAuto(autoNuevo);
-        return autoRepository.autoConPatente(autoNuevo.patente);
-    } catch (error) {
-        console.log(error);
-        return undefined;
+const agregaAutoNuevo = (autoNuevo: Auto) => {
+    if (!autoRepository.idDeAutoConPatente(autoNuevo.patente)) {
+        try {
+            autoRepository.agregaAuto(autoNuevo);
+            return autoRepository.autoConPatente(autoNuevo.patente);
+        } catch (error) {
+            console.log(error);
+            return undefined;
+        }
     }
-}
-
+    return undefined;
+};
 const eliminaAuto = (id: string) => {
-    try {
-        autoRepository.borraAuto(id);
-        return 'Se Elimino el auto con';
-    } catch (error) {
-        console.log(error);
-        return undefined;
+    if (!autoRepository.autoConId(id)) {
+        try {
+            return autoRepository.borraAuto(id);
+        } catch (error) {
+            console.log(error);
+            return undefined;
+        }
     }
-}
+    return undefined;
+};
 
 export default { listado, busquedaDeAutoConPatente, modificaAuto, agregaAutoNuevo, eliminaAuto };
