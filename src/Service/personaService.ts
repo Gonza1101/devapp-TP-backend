@@ -3,8 +3,9 @@ import personasRepository from '../Repository/personasRepository';
 
 const listadoDePersonas = () => {
     const lista = personasRepository.listadoPersonas();
+    //Cambiar el return y usr personasDTO
     return {
-        personas: lista.personas.map((per) => {
+        personas: lista.map((per) => {
             return {
                 dni: per.dni,
                 nombre: per.nombre,

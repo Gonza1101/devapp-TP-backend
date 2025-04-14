@@ -18,10 +18,10 @@ const app = express();
 const port = process.env.PORT || 9000;
 // Configuramos los plugins
 // Más adelante intentaremos entender mejor cómo funcionan estos plugins
-app.use(cors()); //para solucionar el error de cors
 app.use(helmet());
 app.use(bodyParser.json());
 
+app.use(cors());
 // Mis endpoints van acá
 app.get('/', (req, res) => {
     res.json('Llegaste');

@@ -2,7 +2,7 @@ import personasDB from '../DataBase/personasDB';
 import { Persona } from '../Model/Persona';
 
 const listadoPersonas = () => {
-    return { personas: personasDB.listaPersonas };
+    return personasDB.listaPersonas;
 };
 
 const personaConDni = (dniPersona: string) => {
