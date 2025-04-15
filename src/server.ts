@@ -35,7 +35,7 @@ app.get('/autos', (req, res) => {
 });
 
 // READ -
-app.get('/persona/dni', (req, res) => {
+app.get('/persona/:dni', (req, res) => {
     personaController.read(req, res);
 });
 app.get('/auto/patente', (req, res) => {

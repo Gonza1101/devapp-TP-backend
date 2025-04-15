@@ -9,14 +9,14 @@ const browser = (req: Request, res: Response) => {
         res.status(200);
         res.json(autosDe);
     } else {
-        const personas = personaService.listadoDePersonas();
+        const personas = personaService.listadoDePersonas().personas;
         res.status(200);
         res.json(personas);
     }
 };
 //READ
 const read = (req: Request, res: Response) => {
-    const persona = personaService.busquedaDePersonaConDni(req.body.dni);
+    const persona = personaService.busquedaDePersonaConDni(req.params.dni);
     if (persona === undefined) {
         res.status(404);
         res.json(`No hay Persona Registrada con ${req.body.dni}`);
