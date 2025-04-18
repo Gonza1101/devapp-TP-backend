@@ -1,9 +1,10 @@
 import { Persona } from '../Model/Persona';
 import { Genero } from '../Model/Genero';
 import autoLista from './autoDB';
+import { randomUUID } from 'crypto';
 
 const person1: Persona = {
-    id: 'gonzalovillalba33423185',
+    id: '3b6a51ec-951e-4463-be91-a16f980fc309',
     nombre: 'Gonzalo',
     apellido: 'Villalba',
     dni: '33423185',
@@ -14,7 +15,7 @@ const person1: Persona = {
 };
 
 const person2: Persona = {
-    id: 'pambeesley33456123',
+    id: '2c136831-e001-43ef-9d29-5e9aac92cbbd',
     nombre: 'Pam',
     apellido: 'Beesley',
     dni: '35456123',

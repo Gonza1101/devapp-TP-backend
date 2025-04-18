@@ -43,7 +43,7 @@ app.get('/auto/patente', (req, res) => {
 });
 
 // EDIT -
-app.put('/persona/:dni', (req, res) => {
+app.put('/persona/:id', (req, res) => {
     personaController.edit(req, res);
 });
 app.put('/auto/:id', (req, res) => {
@@ -59,7 +59,7 @@ app.post('/auto', (req, res) => {
 });
 
 //DELETE -
-app.delete('/persona/:dni', (req, res) => {
+app.delete('/persona/:id', (req, res) => {
     personaController.delet(req, res);
 });
 app.delete('/auto/:id', (req, res) => {

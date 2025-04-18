@@ -23,7 +23,7 @@ const agregarPersona = (personaNueva: Persona) => {
 };
 
 const eliminaPersona = (idPersona: string) => {
-    const indexPersona = personasDB.listaPersonas.findIndex((p) => p.dni === idPersona);
+    const indexPersona = personasDB.listaPersonas.findIndex((p) => p.id === idPersona);
     return personasDB.listaPersonas.splice(indexPersona, 1);
 };
 

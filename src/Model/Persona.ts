@@ -1,8 +1,9 @@
 import { Auto } from './Auto';
 import { Genero } from './Genero';
+import { UUID } from 'crypto';
 
 export interface Persona {
-    id: string;
+    id: UUID;
     nombre: string;
     apellido: string;
     dni: string;

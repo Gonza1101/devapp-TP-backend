@@ -1,6 +1,7 @@
+import { UUID } from 'crypto';
 export interface Auto {
-    id: string;
-    dniDueño: string;
+    id: UUID;
+    idDueño: string;
     marca: string;
     modelo: string;
     anio: number;

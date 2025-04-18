@@ -23,12 +23,8 @@ const esGeneroValido = (genero: unknown) => {
 };
 
 const sonDatosValidosDePersona = (persona: PersonaDto) => {
-    // console.log(esDatoValido(persona.nombre, 'string'));
-    // console.log(esDatoValido(persona.apellido, 'string'));
-    // console.log(esDatoValido(persona.dni, 'string'));
-    // console.log(esFechaValida(persona.fechaNacimiento));
-    // console.log(esGeneroValido(persona.genero));
     return (
+        esDatoValido(persona.id, 'string') &&
         esDatoValido(persona.nombre, 'string') &&
         esDatoValido(persona.apellido, 'string') &&
         esDatoValido(persona.dni, 'string') &&
@@ -39,7 +35,7 @@ const sonDatosValidosDePersona = (persona: PersonaDto) => {
 
 const sonDatosValidosDeAuto = (auto: AutoDto) => {
     return (
-        esDatoValido(auto.dniDueño, 'string') &&
+        esDatoValido(auto.idDueño, 'string') &&
         esDatoValido(auto.marca, 'string') &&
         esDatoValido(auto.modelo, 'string') &&
         esDatoValido(auto.anio, 'number') &&
