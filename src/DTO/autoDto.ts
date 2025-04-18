@@ -11,19 +11,22 @@ interface AutoDto {
     patente?: string;
 }
 
-const aAutoDto = (auto: Auto) => {
-    const autoDto: AutoDto = {
-        id: auto.id,
-        idDueño: auto.idDueño,
-        marca: auto.marca,
-        modelo: auto.modelo,
-        anio: auto.anio,
-        color: auto.color,
-        numeroChasis: auto.numeroChasis,
-        motor: auto.motor,
-        patente: auto.patente
-    };
-    return autoDto;
+const aAutoDto = (auto: Auto | undefined) => {
+    if (auto) {
+        const autoDto: AutoDto = {
+            id: auto.id,
+            idDueño: auto.idDueño,
+            marca: auto.marca,
+            modelo: auto.modelo,
+            anio: auto.anio,
+            color: auto.color,
+            numeroChasis: auto.numeroChasis,
+            motor: auto.motor,
+            patente: auto.patente
+        };
+        return autoDto;
+    }
+    return undefined;
 };
 
 const aAutoReq = (auto: Auto) => {
@@ -35,4 +38,4 @@ const aAutoReq = (auto: Auto) => {
     return autoReq;
 };
 
-export { AutoDto, aAutoDto, aAutoReq}
+export { AutoDto, aAutoDto, aAutoReq };

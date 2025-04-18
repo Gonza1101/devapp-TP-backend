@@ -1,36 +1,53 @@
+import { aAutoDto, aAutoReq } from '../DTO/autoDto';
 import { Auto } from '../Model/Auto';
+import { AutoDto } from '../DTO/autoDto';
 import autoRepository from '../Repository/autoRepository';
+import { randomUUID } from 'crypto';
 
 const listado = () => {
-    return autoRepository.listadoDeAuto();
+    return autoRepository.listadoDeAuto().map((auto) => aAutoReq(auto));
 };
 const busquedaDeAutoConPatente = (patente: string) => {
-    return autoRepository.autoConPatente(patente);
+    return aAutoDto(autoRepository.autoConPatente(patente));
 };
+
+const busquedaDeAutoConId = (id: string) => {
+    return aAutoDto(autoRepository.autoConId(id));
+};
+
 const modificaAuto = (id: string, autoEdit: Auto) => {
-    //TODO tiene que llegar un autoDTO no un tipo Auto;
     const autoAModificar = autoRepository.autoConId(id);
-    if (autoAModificar !== undefined) {
-        autoRepository.borraAuto(autoAModificar!.id);
+    if (autoAModificar) {
+        autoRepository.borraAuto(autoAModificar.id);
         autoRepository.agregaAuto({ ...autoAModificar, ...autoEdit });
-        return { ...autoAModificar, ...autoEdit };
+        return aAutoDto({ ...autoAModificar, ...autoEdit });
     }
     return undefined;
 };
-//TODO tiene que llegar un tipo autoDTO;
-const agregaAuto = (autoNuevo: Auto) => {
-    if (!autoRepository.idDeAutoConPatente(autoNuevo.patente)) {
-        autoRepository.agregaAuto(autoNuevo);
-        return autoRepository.autoConPatente(autoNuevo.patente);
+
+const agregaAuto = (autoNuevo: AutoDto) => {
+    const auto: Auto = {
+        id: randomUUID(),
+        idDueño: autoNuevo.idDueño!,
+        marca: autoNuevo.marca!,
+        modelo: autoNuevo.modelo!,
+        anio: autoNuevo.anio!,
+        color: autoNuevo.color!,
+        numeroChasis: autoNuevo.numeroChasis!,
+        motor: autoNuevo.motor!,
+        patente: autoNuevo.patente!
+    };
+    if (!autoRepository.idDeAutoConPatente(auto.patente)) {
+        autoRepository.agregaAuto(auto);
+        return aAutoDto(autoRepository.autoConPatente(auto.patente));
     }
     return undefined;
 };
 const eliminaAuto = (id: string) => {
-    console.log(autoRepository.autoConId(id));
     if (autoRepository.autoConId(id)) {
-        return autoRepository.borraAuto(id);
+        return autoRepository.borraAuto(id).map((auto) => aAutoReq(auto));
     }
     return undefined;
 };
 
-export default { listado, busquedaDeAutoConPatente, modificaAuto, agregaAuto, eliminaAuto };
+export default { listado, busquedaDeAutoConPatente, busquedaDeAutoConId, modificaAuto, agregaAuto, eliminaAuto };

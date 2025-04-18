@@ -2,7 +2,7 @@ import autoDB from '../DataBase/autoDB';
 import { Auto } from '../Model/Auto';
 
 const listadoDeAuto = () => {
-    return { autos: autoDB.listaAuto };
+    return autoDB.listaAuto;
 };
 
 const idDeAutoConPatente = (patente: string) => {
@@ -10,12 +10,12 @@ const idDeAutoConPatente = (patente: string) => {
 };
 
 const autoConId = (id: string) => {
-    const idAuto = autoDB.listaAuto.find((a) => a.id === id);
-    return idAuto;
+    const auto = autoDB.listaAuto.find((a) => a.id === id);
+    return auto;
 };
 const autoConPatente = (patente: string) => {
-    const idAuto = autoDB.listaAuto.find((a) => a.patente === patente);
-    return idAuto;
+    const auto = autoDB.listaAuto.find((a) => a.patente === patente);
+    return auto;
 };
 
 const agregaAuto = (auto: Auto) => {
