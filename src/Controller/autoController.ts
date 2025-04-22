@@ -44,7 +44,7 @@ const add = (req: Request, res: Response) => {
         res.json('Auto invalido para Agregar');
     }
     res.status(200);
-    res.json(`Se agrego el auto con patente ${autoAgregado?.id}`);
+    res.json(`Se agrego el auto con patente ${autoAgregado?.patente}`);
 };
 //DELETES
 const delet = (req: Request, res: Response) => {
