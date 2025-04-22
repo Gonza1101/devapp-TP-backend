@@ -31,6 +31,7 @@ const aPersonaDto = (persona: Persona | undefined) => {
 
 const aPersonaReq = (persona: Persona) => {
     const personaReq: PersonaDto = {
+        id: persona.id,
         dni: persona.dni,
         nombre: persona.nombre,
         apellido: persona.apellido,

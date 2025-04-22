@@ -27,7 +27,7 @@ const busquedaDePersonaConDni = (dniPersona: string) => {
 };
 
 const busquedaDePersonaConId = (idPersona: string) => {
-    return personasRepository.personaConDni(idPersona);
+    return personasRepository.personaConId(idPersona);
 };
 
 const agregarPersona = (personaNueva: PersonaDto) => {

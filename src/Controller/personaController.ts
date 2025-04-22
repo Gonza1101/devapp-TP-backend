@@ -24,6 +24,15 @@ const read = (req: Request, res: Response) => {
     res.status(200);
     res.json(persona);
 };
+const readId = (req: Request, res: Response) => {
+    const persona = personaService.busquedaDePersonaConId(req.params.id);
+    if (!persona) {
+        res.status(404);
+        res.json(`No hay Persona Registrada con ${req.body.id}`);
+    }
+    res.status(200);
+    res.json(persona);
+};
 //EDIT
 const edit = (req: Request, res: Response) => {
     if (!validaciones.sonDatosValidosDePersona(req.body)) {
@@ -44,14 +53,17 @@ const add = (req: Request, res: Response) => {
     if (!validaciones.sonDatosValidosDePersona(req.body)) {
         res.status(400);
         res.json('Verificar Datos ingresados');
+        console.log('Verificar Datos ingresados');
+    } else {
+        const personaAgregada = personaService.agregarPersona(req.body);
+        if (!personaAgregada) {
+            res.status(400);
+            res.json(`Usuario con DNI ${req.body.dni} ya se encuentra registrado`);
+            console.log(`Usuario con DNI ${req.body.dni} ya se encuentra registrado`);
+        }
+        res.json(`Se agrego una Persona`);
+        res.status(200);
     }
-    const personaAgregada = personaService.agregarPersona(req.body);
-    if (!personaAgregada) {
-        res.status(400);
-        res.json(`Usuario con DNI ${req.body.dni} ya se encuentra registrado`);
-    }
-    res.json(`Se agrego una Persona`);
-    res.status(200);
 };
 //DELETE
 const delet = (req: Request, res: Response) => {
@@ -64,4 +76,4 @@ const delet = (req: Request, res: Response) => {
     res.json(eliminado);
 };
 
-export default { browser, read, edit, add, delet };
+export default { browser, read, readId, edit, add, delet };
