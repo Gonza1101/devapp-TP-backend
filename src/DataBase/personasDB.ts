@@ -1,8 +1,6 @@
 import { Persona } from '../Model/Persona';
 import { Genero } from '../Model/Genero';
 import autoLista from './autoDB';
-import { randomUUID } from 'crypto';
-
 const person1: Persona = {
     id: '3b6a51ec-951e-4463-be91-a16f980fc309',
     nombre: 'Gonzalo',
@@ -11,7 +9,7 @@ const person1: Persona = {
     fechaNacimiento: new Date(1987 - 13 - 12),
     genero: Genero.Masculino,
     esDonante: true,
-    autos: [autoLista.auto1]
+    autos: [autoLista.auto1, autoLista.auto2]
 };
 
 const person2: Persona = {
