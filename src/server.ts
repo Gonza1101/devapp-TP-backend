@@ -41,10 +41,12 @@ app.get('/persona/:dni', (req, res) => {
 app.get('/persona/id/:id', (req, res) => {
     personaController.readId(req, res);
 });
-app.get('/auto/patente', (req, res) => {
+app.get('/auto/:patente', (req, res) => {
     autoController.read(req, res);
 });
-
+app.get('/auto/:id', (req, res) => {
+    autoController.readId(req, res);
+});
 // EDIT -
 app.put('/persona/:id', (req, res) => {
     personaController.edit(req, res);

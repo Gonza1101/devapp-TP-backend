@@ -9,13 +9,20 @@ const browser = (req: Request, res: Response) => {
 };
 //READ
 const read = (req: Request, res: Response) => {
-    const auto = autoService.busquedaDeAutoConPatente(req.body.patente);
+    const auto = autoService.busquedaDeAutoConPatente(req.params.patente);
     if (!auto) {
         res.status(404);
         res.json(`No existe tal AUTO`);
     }
     res.json(auto);
     res.status(200);
+};
+const readId = (req: Request, res: Response) => {
+    const auto = autoService.busquedaDeAutoConId(req.params.id);
+    if (!auto) {
+        res.status(404);
+        res.json(`No existe tal Auto`);
+    }
 };
 //EDIT
 const edit = (req: Request, res: Response) => {
@@ -57,4 +64,4 @@ const delet = (req: Request, res: Response) => {
     res.json(eliminado);
 };
 
-export default { browser, read, edit, add, delet };
+export default { browser, read, readId, edit, add, delet };

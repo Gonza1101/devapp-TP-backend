@@ -1,8 +1,7 @@
-import { randomUUID } from 'crypto';
 import { Auto } from '../Model/Auto';
 
 const auto1: Auto = {
-    id: randomUUID(),
+    id: '13619a1f-4025-4a54-bb30-d86e9a6b2db8',
     idDueño: '33423185',
     marca: 'Ford',
     modelo: 'Taunus',
@@ -10,11 +9,11 @@ const auto1: Auto = {
     color: 'Naranja',
     numeroChasis: 'fotaus75123',
     motor: 'rumrrrum',
-    patente: 'thc 420'
+    patente: 'thc-420'
 };
 
 const auto2: Auto = {
-    id: randomUUID(),
+    id: '82803b8d-63d0-4147-95db-1f2263145b0e',
     idDueño: '33456123',
     marca: 'Chevrolet',
     modelo: '404',
@@ -22,7 +21,7 @@ const auto2: Auto = {
     color: 'Dorado',
     numeroChasis: 'chevchevi423',
     motor: 'prummprum',
-    patente: 'frula 969'
+    patente: 'frula-969'
 };
 
 const listaAuto: Auto[] = [auto1, auto2];

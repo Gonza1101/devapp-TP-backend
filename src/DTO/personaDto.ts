@@ -40,6 +40,6 @@ const aPersonaReq = (persona: Persona) => {
         })
     };
     return personaReq;
-}
+};
 
 export { PersonaDto, aPersonaDto, aPersonaReq };
