@@ -23,6 +23,8 @@ const readId = (req: Request, res: Response) => {
         res.status(404);
         res.json(`No existe tal Auto`);
     }
+    res.status(200);
+    res.json(auto);
 };
 //EDIT
 const edit = (req: Request, res: Response) => {

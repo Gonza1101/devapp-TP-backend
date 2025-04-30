@@ -9,6 +9,7 @@ interface AutoDto {
     numeroChasis?: string;
     motor?: string;
     patente?: string;
+    img?: string;
 }
 
 const aAutoDto = (auto: Auto | undefined) => {
@@ -22,7 +23,8 @@ const aAutoDto = (auto: Auto | undefined) => {
             color: auto.color,
             numeroChasis: auto.numeroChasis,
             motor: auto.motor,
-            patente: auto.patente
+            patente: auto.patente,
+            img: auto.img
         };
         return autoDto;
     }
@@ -33,7 +35,8 @@ const aAutoReq = (auto: Auto) => {
     const autoReq: AutoDto = {
         marca: auto.marca,
         modelo: auto.modelo,
-        patente: auto.patente
+        patente: auto.patente,
+        img: auto.img
     };
     return autoReq;
 };

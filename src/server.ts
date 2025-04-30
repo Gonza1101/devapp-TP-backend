@@ -44,7 +44,7 @@ app.get('/persona/id/:id', (req, res) => {
 app.get('/auto/:patente', (req, res) => {
     autoController.read(req, res);
 });
-app.get('/auto/:id', (req, res) => {
+app.get('/auto/id/:id', (req, res) => {
     autoController.readId(req, res);
 });
 // EDIT -
@@ -52,6 +52,7 @@ app.put('/persona/:id', (req, res) => {
     personaController.edit(req, res);
 });
 app.put('/auto/:id', (req, res) => {
+    console.log('esty en el Editdel Server');
     autoController.edit(req, res);
 });
 
@@ -62,11 +63,15 @@ app.post('/persona', (req, res) => {
 app.post('/auto', (req, res) => {
     autoController.add(req, res);
 });
-
+//PATCH -
+app.patch('/persona/auto/:idPersona', (req, res) => {
+    personaController.deleteAutoAPersona(req, res);
+});
 //DELETE -
 app.delete('/persona/:id', (req, res) => {
     personaController.delet(req, res);
 });
+
 app.delete('/auto/:id', (req, res) => {
     autoController.delet(req, res);
 });

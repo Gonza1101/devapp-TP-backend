@@ -9,4 +9,5 @@ export interface Auto {
     numeroChasis: string;
     motor: string;
     patente: string;
+    img: string;
 }

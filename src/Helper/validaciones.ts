@@ -18,7 +18,7 @@ const esGeneroValido = (genero: unknown) => {
         (typeof genero === 'string' &&
             (genero.toString() === 'masculino' ||
                 genero.toString() === 'femenino' ||
-                genero.toString() === 'noBinario'))
+                genero.toString() === 'nobinario'))
     );
 };
 

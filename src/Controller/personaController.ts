@@ -26,6 +26,7 @@ const read = (req: Request, res: Response) => {
 };
 const readId = (req: Request, res: Response) => {
     const persona = personaService.busquedaDePersonaConId(req.params.id);
+    console.log(persona?.fechaNacimiento);
     if (!persona) {
         res.status(404);
         res.json(`No hay Persona Registrada con ${req.body.id}`);
@@ -76,4 +77,14 @@ const delet = (req: Request, res: Response) => {
     res.json(eliminado);
 };
 
-export default { browser, read, readId, edit, add, delet };
+const deleteAutoAPersona = (req: Request, res: Response) => {
+    const persona = personaService.eliminarAutodePersona(req.params.idPersona, req.body);
+    if (!persona) {
+        res.status(404);
+        res.json('No se Puede eliminar a un Auto a una Persona que no existe');
+    }
+    res.status(200);
+    res.json(persona?.autos);
+};
+
+export default { browser, read, readId, edit, add, delet, deleteAutoAPersona };

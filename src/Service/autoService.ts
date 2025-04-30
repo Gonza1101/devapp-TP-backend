@@ -35,7 +35,8 @@ const agregaAuto = (autoNuevo: AutoDto) => {
         color: autoNuevo.color!,
         numeroChasis: autoNuevo.numeroChasis!,
         motor: autoNuevo.motor!,
-        patente: autoNuevo.patente!
+        patente: autoNuevo.patente!,
+        img: Math.floor(Math.random() * 10).toString()
     };
     if (!autoRepository.idDeAutoConPatente(auto.patente)) {
         autoRepository.agregaAuto(auto);

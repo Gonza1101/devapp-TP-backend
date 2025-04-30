@@ -10,5 +10,6 @@ export interface Persona {
     fechaNacimiento: Date;
     genero: Genero;
     esDonante?: boolean;
+    img: string;
     autos: Auto[];
 }

@@ -1,4 +1,4 @@
-import { aAutoReq } from '../DTO/autoDto';
+import { aAutoReq, AutoDto } from '../DTO/autoDto';
 import { aPersonaDto, aPersonaReq } from '../DTO/personaDto';
 import { Persona } from '../Model/Persona';
 import { PersonaDto } from '../DTO/personaDto';
@@ -27,7 +27,7 @@ const busquedaDePersonaConDni = (dniPersona: string) => {
 };
 
 const busquedaDePersonaConId = (idPersona: string) => {
-    return personasRepository.personaConId(idPersona);
+    return aPersonaDto(personasRepository.personaConId(idPersona));
 };
 
 const agregarPersona = (personaNueva: PersonaDto) => {
@@ -39,6 +39,7 @@ const agregarPersona = (personaNueva: PersonaDto) => {
         fechaNacimiento: new Date(personaNueva.fechaNacimiento!),
         genero: personaNueva.genero!,
         esDonante: personaNueva.esDonante!,
+        img: personaNueva.img,
         autos: []
     };
     if (!personasRepository.idPersonaConDni(persona.dni)) {
@@ -64,6 +65,19 @@ const eliminarPersonaConId = (idPersona: string) => {
     }
     return undefined;
 };
+const eliminarAutodePersona = (idPersona: string, datosAuto: AutoDto) => {
+    const persona = personasRepository.personaConId(idPersona);
+    if (persona) {
+        const autoIndex = persona.autos.findIndex((a) => a.id === datosAuto.id);
+        if (autoIndex) {
+            persona.autos = persona.autos.splice(autoIndex, 1);
+        }
+        personasRepository.eliminaPersona(persona.id);
+        personasRepository.agregarPersona(persona);
+        return persona;
+    }
+    return undefined;
+}
 
 export default {
     listadoDePersonas,
@@ -72,5 +86,6 @@ export default {
     busquedaDePersonaConId,
     agregarPersona,
     modificaPersona,
-    eliminarPersonaConId
+    eliminarPersonaConId,
+    eliminarAutodePersona
 };

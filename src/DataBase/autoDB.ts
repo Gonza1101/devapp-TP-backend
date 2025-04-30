@@ -9,7 +9,8 @@ const auto1: Auto = {
     color: 'Naranja',
     numeroChasis: 'fotaus75123',
     motor: 'rumrrrum',
-    patente: 'thc-420'
+    patente: 'thc-420',
+    img: Math.floor(Math.random() * 1000).toString()
 };
 
 const auto2: Auto = {
@@ -21,7 +22,8 @@ const auto2: Auto = {
     color: 'Dorado',
     numeroChasis: 'chevchevi423',
     motor: 'prummprum',
-    patente: 'frula-969'
+    patente: 'frula-969',
+    img: Math.floor(Math.random() * 1000).toString()
 };
 
 const listaAuto: Auto[] = [auto1, auto2];
