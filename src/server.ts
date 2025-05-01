@@ -64,7 +64,7 @@ app.post('/auto', (req, res) => {
     autoController.add(req, res);
 });
 //PATCH -
-app.delete('/persona/auto/:idPersona', (req, res) => {
+app.patch('/persona/auto/:idPersona', (req, res) => {
     personaController.deleteAutoAPersona(req, res);
 });
 //DELETE -

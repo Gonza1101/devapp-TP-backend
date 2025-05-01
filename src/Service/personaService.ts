@@ -67,15 +67,14 @@ const eliminarPersonaConId = (idPersona: string) => {
 };
 const eliminarAutodePersona = (idPersona: string, datosAuto: AutoDto) => {
     const persona = personasRepository.personaConId(idPersona);
-    if (persona) {
+    if (persona !== undefined) {
         const autoIndex = persona.autos.findIndex((a) => a.id === datosAuto.id);
-        console.log(autoIndex);
         if (autoIndex !== undefined) {
-            persona.autos = persona.autos.splice(autoIndex, 1);
+            persona.autos.splice(autoIndex, 1);
             personasRepository.eliminaPersona(persona.id);
             personasRepository.agregarPersona(persona);
+            return persona;
         }
-        return persona;
     }
     return undefined;
 };

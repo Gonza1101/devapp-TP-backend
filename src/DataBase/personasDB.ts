@@ -9,7 +9,7 @@ const person1: Persona = {
     fechaNacimiento: new Date(1987, 11, 13), //11 porque es el indice de la ubicacion del mes en una array
     genero: Genero.Masculino,
     esDonante: true,
-    img: Math.floor(Math.random() * 10).toString(),
+    img: '2',
     autos: [autoLista.auto1, autoLista.auto2]
 };
 
@@ -21,7 +21,7 @@ const person2: Persona = {
     fechaNacimiento: new Date(1988, 9, 1),
     genero: Genero.Femenino,
     esDonante: false,
-    img: Math.floor(Math.random() * 150).toString(),
+    img: '3',
     autos: [autoLista.auto2]
 };
 
