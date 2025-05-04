@@ -3,6 +3,7 @@ import { Auto } from '../Model/Auto';
 import { AutoDto } from '../DTO/autoDto';
 import autoRepository from '../Repository/autoRepository';
 import { randomUUID } from 'crypto';
+import personaService from './personaService';
 
 const listado = () => {
     return autoRepository.listadoDeAuto().map((auto) => aAutoReq(auto));
@@ -39,8 +40,13 @@ const agregaAuto = (autoNuevo: AutoDto) => {
         img: Math.floor(Math.random() * 10).toString()
     };
     if (!autoRepository.idDeAutoConPatente(auto.patente)) {
-        autoRepository.agregaAuto(auto);
-        return aAutoDto(autoRepository.autoConPatente(auto.patente));
+        const agregadoAPersona = personaService.agregarAutoAPersona(auto);
+        console.log(agregadoAPersona);
+        if (agregadoAPersona) {
+            autoRepository.agregaAuto(auto);
+            return aAutoDto(autoRepository.autoConPatente(auto.patente));
+        }
+        return undefined;
     }
     return undefined;
 };

@@ -42,15 +42,14 @@ const edit = (req: Request, res: Response) => {
 };
 //ADD
 const add = (req: Request, res: Response) => {
-    const autoAdd = req.body;
-    if (!validaciones.sonDatosValidosDeAuto(autoAdd)) {
+    if (!validaciones.sonDatosValidosDeAuto(req.body)) {
         res.status(400);
-        res.json('Clasico Error de type');
+        res.json('Campos Invalido');
     }
-    const autoAgregado = autoService.agregaAuto(autoAdd);
+    const autoAgregado = autoService.agregaAuto(req.body);
     if (!autoAgregado) {
         res.status(400);
-        res.json('Auto invalido para Agregar');
+        res.json('Error al Cargar AutoS');
     }
     res.status(200);
     res.json(`Se agrego el auto con patente ${autoAgregado?.patente}`);

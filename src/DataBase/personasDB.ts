@@ -10,7 +10,7 @@ const person1: Persona = {
     genero: Genero.Masculino,
     esDonante: true,
     img: '2',
-    autos: [autoLista.auto1, autoLista.auto2]
+    autos: [autoLista.auto1, autoLista.auto3]
 };
 
 const person2: Persona = {

@@ -52,7 +52,6 @@ app.put('/persona/:id', (req, res) => {
     personaController.edit(req, res);
 });
 app.put('/auto/:id', (req, res) => {
-    console.log('esty en el Editdel Server');
     autoController.edit(req, res);
 });
 
@@ -70,10 +69,6 @@ app.patch('/persona/auto/:idPersona', (req, res) => {
 //DELETE -
 app.delete('/persona/:id', (req, res) => {
     personaController.delet(req, res);
-});
-
-app.delete('/auto/:id', (req, res) => {
-    autoController.delet(req, res);
 });
 
 // Levantamos el servidor en el puerto que configuramos

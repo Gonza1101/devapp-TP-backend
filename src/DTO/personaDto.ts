@@ -10,7 +10,7 @@ interface PersonaDto {
     genero?: Genero;
     esDonante?: boolean;
     img: string;
-    autos?: AutoDto[];
+    autosDto?: AutoDto[];
 }
 
 const aPersonaDto = (persona: Persona | undefined) => {
@@ -20,12 +20,11 @@ const aPersonaDto = (persona: Persona | undefined) => {
             nombre: persona.nombre,
             apellido: persona.apellido,
             dni: persona.dni,
-            // fechaNacimiento: `${persona.fechaNacimiento.getUTCFullYear().toString()}-${(persona.fechaNacimiento.getUTCMonth() + 1).toString()}-${persona.fechaNacimiento.getUTCDate().toString()}`,
             fechaNacimiento: formateoFecha(persona.fechaNacimiento),
             genero: persona.genero,
             esDonante: persona.esDonante,
             img: persona.img,
-            autos: persona.autos
+            autosDto: persona.autos
         };
         return personaDto;
     }
@@ -39,7 +38,7 @@ const aPersonaReq = (persona: Persona) => {
         nombre: persona.nombre,
         apellido: persona.apellido,
         img: persona.img,
-        autos: persona.autos.map((auto) => {
+        autosDto: persona.autos.map((auto) => {
             return aAutoReq(auto);
         })
     };

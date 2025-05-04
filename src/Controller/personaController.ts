@@ -45,12 +45,14 @@ const edit = (req: Request, res: Response) => {
     if (persona) {
         res.status(200);
         res.json(persona);
+    } else {
+        res.status(404);
+        res.json(`La Persona no se encuentra registrado`);
     }
-    res.status(404);
-    res.json(`La Persona no se encuentra registrado`);
 };
 //ADD
 const add = (req: Request, res: Response) => {
+    console.log(req.body);
     if (!validaciones.sonDatosValidosDePersona(req.body)) {
         res.status(400);
         res.json('Verificar Datos ingresados');
@@ -72,9 +74,10 @@ const delet = (req: Request, res: Response) => {
     if (!eliminado) {
         res.status(404);
         res.json('No se Puede eliminar a un usuario que no existe');
+    } else {
+        res.status(200);
+        res.json(eliminado);
     }
-    res.status(200);
-    res.json(eliminado);
 };
 
 const deleteAutoAPersona = (req: Request, res: Response) => {
@@ -82,9 +85,10 @@ const deleteAutoAPersona = (req: Request, res: Response) => {
     if (!persona) {
         res.status(404);
         res.json('No se Puede eliminar a un Auto a una Persona que no existe');
+    } else {
+        res.status(200);
+        res.json(persona?.autos);
     }
-    res.status(200);
-    res.json(persona?.autos);
 };
 
 export default { browser, read, readId, edit, add, delet, deleteAutoAPersona };

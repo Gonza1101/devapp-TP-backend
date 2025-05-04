@@ -1,9 +1,12 @@
 import { aAutoReq, AutoDto } from '../DTO/autoDto';
 import { aPersonaDto, aPersonaReq } from '../DTO/personaDto';
 import { Persona } from '../Model/Persona';
+import { Auto } from '../Model/Auto';
 import { PersonaDto } from '../DTO/personaDto';
 import personasRepository from '../Repository/personasRepository';
 import { randomUUID } from 'crypto';
+import autoService from './autoService';
+
 
 const listadoDePersonas = () => {
     const lista = personasRepository.listadoPersonas();
@@ -65,15 +68,28 @@ const eliminarPersonaConId = (idPersona: string) => {
     }
     return undefined;
 };
-const eliminarAutodePersona = (idPersona: string, datosAuto: AutoDto) => {
+const agregarAutoAPersona = (auto: Auto) => {
+    console.log(auto);
+    const persona = personasRepository.personaConDni(auto.idDueño);
+    if (persona !== undefined) {
+        persona.autos.push(auto);
+        return true;
+    }
+    return false;
+};
+
+const eliminarAutodePersona = (idPersona: string, idAuto: AutoDto) => {
     const persona = personasRepository.personaConId(idPersona);
     if (persona !== undefined) {
-        const autoIndex = persona.autos.findIndex((a) => a.id === datosAuto.id);
+        const autoIndex = persona.autos.findIndex((a) => a.id === idAuto.id);
         if (autoIndex !== undefined) {
-            persona.autos.splice(autoIndex, 1);
-            personasRepository.eliminaPersona(persona.id);
-            personasRepository.agregarPersona(persona);
-            return persona;
+            if (autoService.eliminaAuto(idAuto.id!) !== undefined) {
+                persona.autos.splice(autoIndex, 1);
+                personasRepository.eliminaPersona(persona.id);
+                personasRepository.agregarPersona(persona);
+                return persona;
+            }
+            return undefined;
         }
     }
     return undefined;
@@ -87,5 +103,6 @@ export default {
     agregarPersona,
     modificaPersona,
     eliminarPersonaConId,
+    agregarAutoAPersona,
     eliminarAutodePersona
 };

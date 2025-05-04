@@ -10,12 +10,12 @@ const auto1: Auto = {
     numeroChasis: 'fotaus75123',
     motor: 'rumrrrum',
     patente: 'thc-420',
-    img: Math.floor(Math.random() * 1000).toString()
+    img: '301'
 };
 
 const auto2: Auto = {
     id: '82803b8d-63d0-4147-95db-1f2263145b0e',
-    idDueño: '33456123',
+    idDueño: '35456123',
     marca: 'Chevrolet',
     modelo: '404',
     anio: 1965,
@@ -23,9 +23,22 @@ const auto2: Auto = {
     numeroChasis: 'chevchevi423',
     motor: 'prummprum',
     patente: 'frula-969',
-    img: Math.floor(Math.random() * 1000).toString()
+    img: '302'
 };
 
-const listaAuto: Auto[] = [auto1, auto2];
+const auto3: Auto = {
+    id: 'c1a6d0b6-772f-4f76-b1c9-fede5e25a762',
+    idDueño: '33423185',
+    marca: 'Renault',
+    modelo: '405',
+    anio: 1985,
+    color: 'Dorado',
+    numeroChasis: '192.185.136.185',
+    motor: 'prummprum',
+    patente: 'ABC-123',
+    img: '303'
+};
 
-export default { listaAuto, auto1, auto2 };
+const listaAuto: Auto[] = [auto1, auto2, auto3];
+
+export default { listaAuto, auto1, auto2, auto3 };

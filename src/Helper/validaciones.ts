@@ -38,7 +38,7 @@ const sonDatosValidosDeAuto = (auto: AutoDto) => {
         esDatoValido(auto.idDueño, 'string') &&
         esDatoValido(auto.marca, 'string') &&
         esDatoValido(auto.modelo, 'string') &&
-        esDatoValido(auto.anio, 'number') &&
+        esDatoValido(auto.anio!, 'number') &&
         esDatoValido(auto.color, 'string') &&
         esDatoValido(auto.numeroChasis, 'string') &&
         esDatoValido(auto.motor, 'string') &&
