@@ -7,7 +7,6 @@ import personasRepository from '../Repository/personasRepository';
 import { randomUUID } from 'crypto';
 import autoService from './autoService';
 
-
 const listadoDePersonas = () => {
     const lista = personasRepository.listadoPersonas();
     return {
