@@ -1,6 +1,6 @@
 import { Genero } from '../Model/Genero';
 import { Persona } from '../Model/Persona';
-import { aAutoReq, AutoDto } from './autoDto';
+import { aAutoDto, aAutoReq, AutoDto } from './autoDto';
 interface PersonaDto {
     id?: string;
     nombre?: string;
@@ -9,26 +9,25 @@ interface PersonaDto {
     fechaNacimiento?: string;
     genero?: Genero;
     esDonante?: boolean;
-    img: string;
+    img?: string;
     autos?: AutoDto[];
 }
 
-const aPersonaDto = (persona: Persona | undefined) => {
-    if (persona) {
-        const personaDto: PersonaDto = {
-            id: persona.id,
-            nombre: persona.nombre,
-            apellido: persona.apellido,
-            dni: persona.dni,
-            fechaNacimiento: formateoFecha(persona.fechaNacimiento),
-            genero: persona.genero,
-            esDonante: persona.esDonante,
-            img: persona.img,
-            autos: persona.autos
-        };
-        return personaDto;
-    }
-    return undefined;
+const aPersonaDto = (persona: Persona) => {
+    const personaDto: PersonaDto = {
+        id: persona.id,
+        nombre: persona.nombre,
+        apellido: persona.apellido,
+        dni: persona.dni,
+        fechaNacimiento: formateoFecha(persona.fechaNacimiento),
+        genero: persona.genero,
+        esDonante: persona.esDonante,
+        img: persona.img,
+        autos: persona.autos.map((auto) => {
+            return aAutoDto(auto);
+        })
+    };
+    return personaDto;
 };
 
 const aPersonaReq = (persona: Persona) => {

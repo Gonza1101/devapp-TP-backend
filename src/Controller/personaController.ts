@@ -16,17 +16,8 @@ const browser = (req: Request, res: Response) => {
 };
 //READ
 const read = (req: Request, res: Response) => {
-    const persona = personaService.busquedaDePersonaConDni(req.params.dni);
-    if (!persona) {
-        res.status(404);
-        res.json(`No hay Persona Registrada con ${req.body.dni}`);
-    }
-    res.status(200);
-    res.json(persona);
-};
-const readId = (req: Request, res: Response) => {
-    const persona = personaService.busquedaDePersonaConId(req.params.id);
-    console.log(persona?.fechaNacimiento);
+    const persona = personaService.personaConId(req.params.id);
+    // console.log(persona?.fechaNacimiento);
     if (!persona) {
         res.status(404);
         res.json(`No hay Persona Registrada con ${req.body.id}`);
@@ -37,17 +28,15 @@ const readId = (req: Request, res: Response) => {
 //EDIT
 const edit = (req: Request, res: Response) => {
     if (!validaciones.sonDatosValidosDePersona(req.body)) {
-        res.status(400);
-        res.json('Datos incorrectos');
-    }
-    console.log(req.params.id);
-    const persona = personaService.modificaPersona(req.params.id, req.body);
-    if (persona) {
-        res.status(200);
-        res.json(persona);
+        res.status(400).json('Datos incorrectos');
     } else {
-        res.status(404);
-        res.json(`La Persona no se encuentra registrado`);
+        // console.log(req.params.id);
+        const persona = personaService.modificaPersona(req.params.id, req.body);
+        if (persona) {
+            res.status(200).json(persona);
+        } else {
+            res.status(404).json(`La Persona no se encuentra registrado`);
+        }
     }
 };
 //ADD
@@ -56,13 +45,13 @@ const add = (req: Request, res: Response) => {
     if (!validaciones.sonDatosValidosDePersona(req.body)) {
         res.status(400);
         res.json('Verificar Datos ingresados');
-        console.log('Verificar Datos ingresados');
+        // console.log('Verificar Datos ingresados');
     } else {
         const personaAgregada = personaService.agregarPersona(req.body);
         if (!personaAgregada) {
             res.status(400);
             res.json(`Usuario con DNI ${req.body.dni} ya se encuentra registrado`);
-            console.log(`Usuario con DNI ${req.body.dni} ya se encuentra registrado`);
+            // console.log(`Usuario con DNI ${req.body.dni} ya se encuentra registrado`);
         }
         res.json(`Se agrego una Persona`);
         res.status(200);
@@ -91,4 +80,4 @@ const deleteAutoAPersona = (req: Request, res: Response) => {
     }
 };
 
-export default { browser, read, readId, edit, add, delet, deleteAutoAPersona };
+export default { browser, read, edit, add, delet, deleteAutoAPersona };

@@ -35,17 +35,11 @@ app.get('/autos', (req, res) => {
 });
 
 // READ -
-app.get('/persona/:dni', (req, res) => {
+app.get('/persona/:id', (req, res) => {
     personaController.read(req, res);
 });
-app.get('/persona/id/:id', (req, res) => {
-    personaController.readId(req, res);
-});
-app.get('/auto/:patente', (req, res) => {
+app.get('/auto/:id', (req, res) => {
     autoController.read(req, res);
-});
-app.get('/auto/id/:id', (req, res) => {
-    autoController.readId(req, res);
 });
 // EDIT -
 app.put('/persona/:id', (req, res) => {

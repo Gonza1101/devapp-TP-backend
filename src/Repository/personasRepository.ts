@@ -13,13 +13,14 @@ const personaConId = (idPersona: string) => {
     return personasDB.listaPersonas.find((p) => p.id === idPersona);
 };
 
-const idPersonaConDni = (dniPersona: string) => {
-    return personaConDni(dniPersona)?.id;
-};
-
 const agregarPersona = (personaNueva: Persona) => {
-    personasDB.listaPersonas.push(personaNueva);
-    return `Se agrego una persona nueva con DNI ${personaNueva.dni}`;
+    try {
+        personasDB.listaPersonas.push(personaNueva);
+    } catch {
+        //Aca Manejaria Error..
+        console.log('No se puso Cargar');
+        return false;
+    }
 };
 
 const eliminaPersona = (idPersona: string) => {
@@ -27,4 +28,4 @@ const eliminaPersona = (idPersona: string) => {
     return personasDB.listaPersonas.splice(indexPersona, 1);
 };
 
-export default { listadoPersonas, personaConDni, personaConId, agregarPersona, idPersonaConDni, eliminaPersona };
+export default { listadoPersonas, personaConDni, personaConId, agregarPersona, eliminaPersona, eliminarAutoDePersona };

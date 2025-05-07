@@ -24,27 +24,39 @@ const listaDeAutosDePersonaConDni = (dni: string) => {
     };
 };
 
-const busquedaDePersonaConDni = (dniPersona: string) => {
-    return aPersonaDto(personasRepository.personaConDni(dniPersona));
-};
+// const personaConDni = (dniPersona: string) => {
+//     // console.log('PersonaService -> dniPersona');
+//     // console.log(dniPersona);
+//     const persona = personasRepository.personaConDni(dniPersona);
+//     if (persona) {
+//         // console.log(persona);
+//         return aPersonaDto(persona);
+//     } else {
+//         return undefined;
+//     }
+// };
 
-const busquedaDePersonaConId = (idPersona: string) => {
-    return aPersonaDto(personasRepository.personaConId(idPersona));
+const personaConId = (idPersona: string) => {
+    const persona = personasRepository.personaConId(idPersona);
+    if (persona) {
+        return aPersonaDto(persona);
+    }
+    return undefined;
 };
 
 const agregarPersona = (personaNueva: PersonaDto) => {
-    const persona: Persona = {
-        id: randomUUID(),
-        nombre: personaNueva.nombre!,
-        apellido: personaNueva.apellido!,
-        dni: personaNueva.dni!,
-        fechaNacimiento: new Date(personaNueva.fechaNacimiento!),
-        genero: personaNueva.genero!,
-        esDonante: personaNueva.esDonante!,
-        img: personaNueva.img,
-        autos: []
-    };
-    if (!personasRepository.idPersonaConDni(persona.dni)) {
+    if (!personasRepository.personaConDni(personaNueva.dni!)) {
+        const persona: Persona = {
+            id: randomUUID(),
+            nombre: personaNueva.nombre!,
+            apellido: personaNueva.apellido!,
+            dni: personaNueva.dni!,
+            fechaNacimiento: new Date(personaNueva.fechaNacimiento!),
+            genero: personaNueva.genero!,
+            esDonante: personaNueva.esDonante!,
+            img: personaNueva.img!,
+            autos: new Array<Auto>()
+        };
         personasRepository.agregarPersona(persona);
         return personasRepository.personaConDni(persona.dni);
     }
@@ -53,6 +65,10 @@ const agregarPersona = (personaNueva: PersonaDto) => {
 
 const modificaPersona = (idPersona: string, datosNuevos: Persona) => {
     const personasAModificar = personasRepository.personaConId(idPersona);
+    // console.log('Persona A Modificar');
+    // console.log(personasAModificar);
+    // console.log('Persona para Modificar');
+    // console.log(datosNuevos);
     if (personasAModificar) {
         personasRepository.eliminaPersona(idPersona);
         personasRepository.agregarPersona({ ...personasAModificar, ...datosNuevos });
@@ -68,7 +84,6 @@ const eliminarPersonaConId = (idPersona: string) => {
     return undefined;
 };
 const agregarAutoAPersona = (auto: Auto) => {
-    console.log(auto);
     const persona = personasRepository.personaConDni(auto.idDueño);
     if (persona !== undefined) {
         persona.autos.push(auto);
@@ -77,12 +92,12 @@ const agregarAutoAPersona = (auto: Auto) => {
     return false;
 };
 
-const eliminarAutodePersona = (idPersona: string, idAuto: AutoDto) => {
+const eliminarAutodePersona = (idPersona: string, auto: AutoDto) => {
     const persona = personasRepository.personaConId(idPersona);
     if (persona !== undefined) {
-        const autoIndex = persona.autos.findIndex((a) => a.id === idAuto.id);
+        const autoIndex = persona.autos.findIndex((a) => a.id === auto.id);
         if (autoIndex !== undefined) {
-            if (autoService.eliminaAuto(idAuto.id!) !== undefined) {
+            if (autoService.eliminaAuto(auto.id!) !== undefined) {
                 persona.autos.splice(autoIndex, 1);
                 personasRepository.eliminaPersona(persona.id);
                 personasRepository.agregarPersona(persona);
@@ -97,8 +112,8 @@ const eliminarAutodePersona = (idPersona: string, idAuto: AutoDto) => {
 export default {
     listadoDePersonas,
     listaDeAutosDePersonaConDni,
-    busquedaDePersonaConDni,
-    busquedaDePersonaConId,
+    // personaConDni,
+    personaConId,
     agregarPersona,
     modificaPersona,
     eliminarPersonaConId,

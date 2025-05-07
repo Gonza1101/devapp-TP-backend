@@ -10,7 +10,7 @@ const auto1: Auto = {
     numeroChasis: 'fotaus75123',
     motor: 'rumrrrum',
     patente: 'thc-420',
-    img: '301'
+    img: '101'
 };
 
 const auto2: Auto = {
@@ -23,7 +23,7 @@ const auto2: Auto = {
     numeroChasis: 'chevchevi423',
     motor: 'prummprum',
     patente: 'frula-969',
-    img: '302'
+    img: '102'
 };
 
 const auto3: Auto = {
@@ -36,7 +36,7 @@ const auto3: Auto = {
     numeroChasis: '192.185.136.185',
     motor: 'prummprum',
     patente: 'ABC-123',
-    img: '303'
+    img: '103'
 };
 
 const listaAuto: Auto[] = [auto1, auto2, auto3];
