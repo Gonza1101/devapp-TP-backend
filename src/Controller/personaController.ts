@@ -69,7 +69,7 @@ const delet = (req: Request, res: Response) => {
     }
 };
 
-const deleteAutoAPersona = (req: Request, res: Response) => {
+const eliminaAutoAPersona = (req: Request, res: Response) => {
     const persona = personaService.eliminarAutodePersona(req.params.idPersona, req.body);
     if (!persona) {
         res.status(404);
@@ -80,4 +80,4 @@ const deleteAutoAPersona = (req: Request, res: Response) => {
     }
 };
 
-export default { browser, read, edit, add, delet, deleteAutoAPersona };
+export default { browser, read, edit, add, delet, eliminaAutoAPersona };

@@ -72,13 +72,18 @@ const modificaPersona = (idPersona: string, datosNuevos: Persona) => {
     if (personasAModificar) {
         personasRepository.eliminaPersona(idPersona);
         personasRepository.agregarPersona({ ...personasAModificar, ...datosNuevos });
+        console.log({ ...personasAModificar, ...datosNuevos });
         return aPersonaDto({ ...personasAModificar, ...datosNuevos });
     }
     return undefined;
 };
 
 const eliminarPersonaConId = (idPersona: string) => {
-    if (personasRepository.personaConId(idPersona)) {
+    const persona = personasRepository.personaConId(idPersona);
+    if (persona) {
+        //elimino los auto de la lista gral.
+        persona.autos.map((a) => autoService.eliminaAuto(a.id));
+        //elimino la persona
         return personasRepository.eliminaPersona(idPersona).map((p) => aPersonaReq(p));
     }
     return undefined;
@@ -86,7 +91,7 @@ const eliminarPersonaConId = (idPersona: string) => {
 const agregarAutoAPersona = (auto: Auto) => {
     const persona = personasRepository.personaConDni(auto.idDueño);
     if (persona !== undefined) {
-        persona.autos.push(auto);
+        personasRepository.agregarAuto(persona.id, auto);
         return true;
     }
     return false;
@@ -97,13 +102,10 @@ const eliminarAutodePersona = (idPersona: string, auto: AutoDto) => {
     if (persona !== undefined) {
         const autoIndex = persona.autos.findIndex((a) => a.id === auto.id);
         if (autoIndex !== undefined) {
-            if (autoService.eliminaAuto(auto.id!) !== undefined) {
-                persona.autos.splice(autoIndex, 1);
-                personasRepository.eliminaPersona(persona.id);
-                personasRepository.agregarPersona(persona);
-                return persona;
-            }
-            return undefined;
+            persona.autos.splice(autoIndex, 1);
+            personasRepository.eliminaPersona(persona.id);
+            personasRepository.agregarPersona(persona);
+            return persona;
         }
     }
     return undefined;

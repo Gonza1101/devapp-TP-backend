@@ -25,7 +25,7 @@ const aAutoDto = (auto: Auto) => {
         motor: auto.motor,
         patente: auto.patente,
         img: auto.img
-    }
+    };
     return autoDto;
 };
 

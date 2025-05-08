@@ -23,8 +23,7 @@ const edit = (req: Request, res: Response) => {
     // console.log(req.body);
     if (!validaciones.sonDatosValidosDeAuto(req.body)) {
         // console.log('Clasico Error de type');
-        res.status(400);
-        res.json('Clasico Error de type');
+        res.status(400).json('Clasico Error de type');
     } else {
         const autoEditado = autoService.modificaAuto(req.params.id, req.body);
         if (autoEditado === undefined) {
@@ -42,23 +41,23 @@ const edit = (req: Request, res: Response) => {
 };
 //ADD
 const add = (req: Request, res: Response) => {
-    // if (!validaciones.sonDatosValidosDeAuto(req.body)) {
-    //     console.log('Datos NoValidos');
-    //     res.status(400);
-    //     res.json('Campos Invalido');
-    // } else {
-    //     const autoAgregado = autoService.agregaAuto(req.body);
-    //     console.log('ControllerAuto -> muestro el autoAgregado');
-    //     console.log(autoAgregado);
-    //     if (!autoAgregado) {
-    //         console.log('autoAgregado status 400');
-    //         res.status(400);
-    //         res.json('Error al Cargar AutoS');
-    //     }
-    //     console.log('autoAgregado status 200');
-    //     res.status(200);
-    //     res.json(`Se agrego el auto con patente ${autoAgregado!.patente}`);
-    // }
+    if (!validaciones.sonDatosValidosDeAuto(req.body)) {
+        // console.log('Datos NoValidos');
+        res.status(400);
+        res.json('Campos Invalido');
+    } else {
+        const autoAgregado = autoService.agregaAuto(req.body);
+        // console.log('ControllerAuto -> muestro el autoAgregado');
+        // console.log(autoAgregado);
+        if (!autoAgregado) {
+            // console.log('autoAgregado status 400');
+            res.status(400);
+            res.json('Error al Cargar AutoS');
+        }
+        // console.log('autoAgregado status 200');
+        res.status(200);
+        res.json(`Se agrego el auto con patente ${autoAgregado!.patente}`);
+    }
 };
 //DELETES
 const delet = (req: Request, res: Response) => {

@@ -4,6 +4,7 @@ import { AutoDto } from '../DTO/autoDto';
 import autoRepository from '../Repository/autoRepository';
 import personasRepository from '../Repository/personasRepository';
 import personaService from './personaService';
+import { randomUUID } from 'crypto';
 // import { randomUUID } from 'crypto';
 // import autoDB from '../DataBase/autoDB';
 
@@ -16,6 +17,37 @@ const autoConId = (id: string) => {
         return aAutoDto(auto);
     }
     return undefined;
+};
+const agregaAuto = (autoNuevo: AutoDto) => {
+    const auto: Auto = {
+        id: randomUUID(),
+        idDueño: autoNuevo.idDueño!,
+        marca: autoNuevo.marca!,
+        modelo: autoNuevo.modelo!,
+        anio: parseInt(autoNuevo.anio!),
+        color: autoNuevo.color!,
+        numeroChasis: autoNuevo.numeroChasis!,
+        motor: autoNuevo.motor!,
+        patente: autoNuevo.patente!,
+        img: Math.floor(Math.random() * 10).toString()
+    };
+    // console.log('Service -> AutoNuevo<Auto>');
+    // console.log(auto);
+    //Verifico que exista el auto
+    if (!autoRepository.idDeAutoConPatente(auto.patente)) {
+        const agregadoAPersona = personaService.agregarAutoAPersona(auto); //Se lo agrega a la Persona
+        // console.log('Service -> Persona a la cual se agrega Persona');
+        // console.log(agregadoAPersona);
+        // Verifico que se Agrego.
+        if (agregadoAPersona) {
+            autoRepository.agregaAuto(auto); // Agrego a lista Gral.
+            // console.log('Service -> busco el auto nuevo por su Patente');
+            // console.log(autoRepository.autoConPatente(auto.patente));
+            const autoAgregado = autoRepository.autoConPatente(auto.patente);
+            const autoDto = aAutoDto(autoAgregado!);
+            return autoDto;
+        }
+    }
 };
 
 const modificaAuto = (id: string, autoEdit: AutoDto) => {
@@ -30,56 +62,22 @@ const modificaAuto = (id: string, autoEdit: AutoDto) => {
     // console.log('AutoService-> dueño');
     // console.log(dueño);
     if (auto && dueño) {
+        const autoModificado = { ...aAutoDto(auto), ...autoEdit };
         // console.log('modificarAuto -> autoAModificar');
         // console.log(autoAModificar);
-        const auto = aAuto(autoEdit);
+        //edito la lista general de Autos
         autoRepository.borraAuto(auto.id!); //Borro de la lista De Autos Gral.
-        personaService.eliminarAutodePersona(dueño.id!, auto); //Borro de la lista de la persona particuar.
-        autoRepository.agregaAuto({ ...autoAModificar, ...auto });
-        return aAutoDto({ ...autoAModificar, ...auto });
+        autoRepository.agregaAuto(aAuto(autoModificado));
+        //Edito la lista particular del Dueño
+        personaService.eliminarAutodePersona(dueño.id!, autoModificado); //Borro de la lista de la persona particuar.
+        // TODO error si no existe el auto en la persona
+        personasRepository.agregarAuto(dueño.id, aAuto(autoModificado));
+        return autoModificado;
     } else {
         return undefined;
     }
 };
 
-const eliminarAutoDePersona = (idPersona: string, idAuto: string) => {
-    const persona = personaConId(idPersona);
-    if (persona) {
-        eliminaPersona(idPersona);
-        const indexAuto = persona?.autos.findIndex((a) => a.id === idAuto);
-        persona.autos.splice(indexAuto, 1);
-        return persona;
-    }
-    return undefined;
-};
-
-const agregaAuto = (autoNuevo: AutoDto) => {
-    // const auto: Auto = {
-    //     id: randomUUID(),
-    //     idDueño: autoNuevo.idDueño!,
-    //     marca: autoNuevo.marca!,
-    //     modelo: autoNuevo.modelo!,
-    //     anio: parseInt(autoNuevo.anio!),
-    //     color: autoNuevo.color!,
-    //     numeroChasis: autoNuevo.numeroChasis!,
-    //     motor: autoNuevo.motor!,
-    //     patente: autoNuevo.patente!,
-    //     img: Math.floor(Math.random() * 10).toString()
-    // };
-    // console.log('Service -> AutoNuevo<Auto>');
-    // console.log(auto);
-    // if (!autoRepository.idDeAutoConPatente(auto.patente)) {
-    //     const agregadoAPersona = personaService.agregarAutoAPersona(auto);
-    //     console.log('Service -> Persona a la cual se agrega Persona');
-    //     console.log(agregadoAPersona);
-    //     if (agregadoAPersona) {
-    //         autoRepository.agregaAuto(auto);
-    //         console.log('Service -> busco el auto nuevo por su Patente');
-    //         console.log(autoRepository.autoConPatente(auto.patente));
-    //         return aAutoDto(autoRepository.autoConPatente(auto.patente));
-    //     }
-    // }
-};
 const eliminaAuto = (id: string) => {
     if (autoRepository.autoConId(id)) {
         return autoRepository.borraAuto(id).map((auto) => aAutoReq(auto));
