@@ -24,18 +24,6 @@ const listaDeAutosDePersonaConDni = (dni: string) => {
     };
 };
 
-// const personaConDni = (dniPersona: string) => {
-//     // console.log('PersonaService -> dniPersona');
-//     // console.log(dniPersona);
-//     const persona = personasRepository.personaConDni(dniPersona);
-//     if (persona) {
-//         // console.log(persona);
-//         return aPersonaDto(persona);
-//     } else {
-//         return undefined;
-//     }
-// };
-
 const personaConId = (idPersona: string) => {
     const persona = personasRepository.personaConId(idPersona);
     if (persona) {
@@ -116,7 +104,6 @@ const eliminarAutodePersona = (idPersona: string, auto: AutoDto) => {
 export default {
     listadoDePersonas,
     listaDeAutosDePersonaConDni,
-    // personaConDni,
     personaConId,
     agregarPersona,
     modificaPersona,

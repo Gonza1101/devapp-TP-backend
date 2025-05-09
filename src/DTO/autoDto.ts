@@ -1,4 +1,3 @@
-// import { UUID } from 'crypto';
 import { Auto } from '../Model/Auto';
 interface AutoDto {
     id?: string;

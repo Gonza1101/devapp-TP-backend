@@ -17,7 +17,6 @@ const browser = (req: Request, res: Response) => {
 //READ
 const read = (req: Request, res: Response) => {
     const persona = personaService.personaConId(req.params.id);
-    // console.log(persona?.fechaNacimiento);
     if (!persona) {
         res.status(404);
         res.json(`No hay Persona Registrada con ${req.body.id}`);
@@ -30,7 +29,6 @@ const edit = (req: Request, res: Response) => {
     if (!validaciones.sonDatosValidosDePersona(req.body)) {
         res.status(400).json('Datos incorrectos');
     } else {
-        // console.log(req.params.id);
         const persona = personaService.modificaPersona(req.params.id, req.body);
         if (persona) {
             res.status(200).json(persona);
@@ -45,13 +43,11 @@ const add = (req: Request, res: Response) => {
     if (!validaciones.sonDatosValidosDePersona(req.body)) {
         res.status(400);
         res.json('Verificar Datos ingresados');
-        // console.log('Verificar Datos ingresados');
     } else {
         const personaAgregada = personaService.agregarPersona(req.body);
         if (!personaAgregada) {
             res.status(400);
             res.json(`Usuario con DNI ${req.body.dni} ya se encuentra registrado`);
-            // console.log(`Usuario con DNI ${req.body.dni} ya se encuentra registrado`);
         }
         res.json(`Se agrego una Persona`);
         res.status(200);
