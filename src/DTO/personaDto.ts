@@ -1,6 +1,6 @@
 import { Genero } from '../Model/Genero';
 import { Persona } from '../Model/Persona';
-import { aAutoDto, aAutoReq, AutoDto } from './autoDto';
+import { aAuto, aAutoDto, aAutoReq, AutoDto } from './autoDto';
 interface PersonaDto {
     id?: string;
     nombre?: string;
@@ -44,6 +44,21 @@ const aPersonaReq = (persona: Persona) => {
     return personaReq;
 };
 
+const aPersona = (personaDto: PersonaDto) => {
+    const persona: Persona = {
+        apellido: personaDto.apellido!,
+        dni: personaDto.dni!,
+        fechaNacimiento: new Date(personaDto.fechaNacimiento!),
+        genero: personaDto.genero!,
+        id: personaDto.id!,
+        img: personaDto.img!,
+        nombre: personaDto.nombre!,
+        esDonante: personaDto.esDonante,
+        autos: personaDto.autos!.map((a) => aAuto(a))
+    };
+    return persona;
+};
+
 const formateoFecha = (fecha: Date) => {
     const anio = fecha.getUTCFullYear().toString();
     let mes = (fecha.getUTCMonth() + 1).toString();
@@ -58,4 +73,4 @@ const formateoFecha = (fecha: Date) => {
     return anio.concat('-').concat(mes.toString()).concat('-').concat(dia.toString());
 };
 
-export { PersonaDto, aPersonaDto, aPersonaReq };
+export { PersonaDto, aPersonaDto, aPersonaReq, aPersona };

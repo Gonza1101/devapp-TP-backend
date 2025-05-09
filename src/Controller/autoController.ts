@@ -52,7 +52,7 @@ const add = (req: Request, res: Response) => {
         if (!autoAgregado) {
             // console.log('autoAgregado status 400');
             res.status(400);
-            res.json('Error al Cargar AutoS');
+            res.json('Error al Cargar Auto');
         }
         // console.log('autoAgregado status 200');
         res.status(200);

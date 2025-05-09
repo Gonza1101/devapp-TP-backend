@@ -1,5 +1,5 @@
 import { aAutoReq, AutoDto } from '../DTO/autoDto';
-import { aPersonaDto, aPersonaReq } from '../DTO/personaDto';
+import { aPersona, aPersonaDto, aPersonaReq } from '../DTO/personaDto';
 import { Persona } from '../Model/Persona';
 import { Auto } from '../Model/Auto';
 import { PersonaDto } from '../DTO/personaDto';
@@ -63,17 +63,19 @@ const agregarPersona = (personaNueva: PersonaDto) => {
     return undefined;
 };
 
-const modificaPersona = (idPersona: string, datosNuevos: Persona) => {
-    const personasAModificar = personasRepository.personaConId(idPersona);
+const modificaPersona = (idPersona: string, datosNuevos: PersonaDto) => {
+    const persona = personasRepository.personaConId(idPersona);
     // console.log('Persona A Modificar');
     // console.log(personasAModificar);
     // console.log('Persona para Modificar');
     // console.log(datosNuevos);
-    if (personasAModificar) {
+    if (persona) {
+        const personaAEditar = aPersonaDto(persona);
+        const personaModificada = aPersona({ ...personaAEditar, ...datosNuevos });
         personasRepository.eliminaPersona(idPersona);
-        personasRepository.agregarPersona({ ...personasAModificar, ...datosNuevos });
-        console.log({ ...personasAModificar, ...datosNuevos });
-        return aPersonaDto({ ...personasAModificar, ...datosNuevos });
+        personasRepository.agregarPersona(personaModificada);
+        // console.log(personaModificada);
+        return aPersonaDto(personaModificada);
     }
     return undefined;
 };
@@ -89,7 +91,7 @@ const eliminarPersonaConId = (idPersona: string) => {
     return undefined;
 };
 const agregarAutoAPersona = (auto: Auto) => {
-    const persona = personasRepository.personaConDni(auto.idDueño);
+    const persona = personasRepository.personaConId(auto.idDueño);
     if (persona !== undefined) {
         personasRepository.agregarAuto(persona.id, auto);
         return true;

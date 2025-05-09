@@ -1,5 +1,6 @@
 import { aAutoDto, aAutoReq } from '../DTO/autoDto';
-import { Auto, aAuto } from '../Model/Auto';
+import { Auto } from '../Model/Auto';
+import { aAuto } from '../DTO/autoDto';
 import { AutoDto } from '../DTO/autoDto';
 import autoRepository from '../Repository/autoRepository';
 import personasRepository from '../Repository/personasRepository';
@@ -19,6 +20,7 @@ const autoConId = (id: string) => {
     return undefined;
 };
 const agregaAuto = (autoNuevo: AutoDto) => {
+    // console.log(autoNuevo);
     const auto: Auto = {
         id: randomUUID(),
         idDueño: autoNuevo.idDueño!,
@@ -29,16 +31,16 @@ const agregaAuto = (autoNuevo: AutoDto) => {
         numeroChasis: autoNuevo.numeroChasis!,
         motor: autoNuevo.motor!,
         patente: autoNuevo.patente!,
-        img: Math.floor(Math.random() * 10).toString()
+        img: Math.floor(Math.random() * 100).toString()
     };
     // console.log('Service -> AutoNuevo<Auto>');
-    // console.log(auto);
+    // console.log(auto.patente);
     //Verifico que exista el auto
-    if (!autoRepository.idDeAutoConPatente(auto.patente)) {
+    if (autoRepository.idDeAutoConPatente(auto.patente) === undefined) {
         const agregadoAPersona = personaService.agregarAutoAPersona(auto); //Se lo agrega a la Persona
-        // console.log('Service -> Persona a la cual se agrega Persona');
-        // console.log(agregadoAPersona);
-        // Verifico que se Agrego.
+        console.log('Service -> Persona a la cual se agrega Persona');
+        console.log(agregadoAPersona);
+        //Verifico que se Agrego.
         if (agregadoAPersona) {
             autoRepository.agregaAuto(auto); // Agrego a lista Gral.
             // console.log('Service -> busco el auto nuevo por su Patente');
