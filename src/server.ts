@@ -1,4 +1,5 @@
-/* USO DEL SPRET para  "concatenar" datos de dos objetos;
+/* 
+        USO DEL SPRET para  "concatenar" datos de dos objetos;
         {...objeto} => crea un objeto con todos los campos del objeto;
         {...objeto1,...objeto2} => crea un objeto nuevo sumando los campos del objeto 1 + objeto 2;
                                     si llegara a haber claves iguales se pisan y se guardan las del segundo objeto;
