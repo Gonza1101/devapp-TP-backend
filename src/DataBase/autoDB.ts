@@ -2,7 +2,7 @@ import { Auto } from '../Model/Auto';
 
 const auto1: Auto = {
     id: '13619a1f-4025-4a54-bb30-d86e9a6b2db8',
-    idDueño: '33423185',
+    idDueño: '3b6a51ec-951e-4463-be91-a16f980fc309',
     marca: 'Ford',
     modelo: 'Taunus',
     anio: 1975,
@@ -15,7 +15,7 @@ const auto1: Auto = {
 
 const auto2: Auto = {
     id: '82803b8d-63d0-4147-95db-1f2263145b0e',
-    idDueño: '35456123',
+    idDueño: '2c136831-e001-43ef-9d29-5e9aac92cbbd',
     marca: 'Chevrolet',
     modelo: '404',
     anio: 1965,
@@ -28,7 +28,7 @@ const auto2: Auto = {
 
 const auto3: Auto = {
     id: 'c1a6d0b6-772f-4f76-b1c9-fede5e25a762',
-    idDueño: '33423185',
+    idDueño: '3b6a51ec-951e-4463-be91-a16f980fc309',
     marca: 'Renault',
     modelo: '405',
     anio: 1985,
