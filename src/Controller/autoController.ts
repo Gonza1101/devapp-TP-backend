@@ -8,10 +8,7 @@ const browser = (req: Request, res: Response) => {
 };
 //READ
 const read = (req: Request, res: Response) => {
-    const auto = autoService.autoConId(req.params.id);
-    if (!auto) {
-        res.status(404).json(`No existe tal AUTO`);
-    }
+    const auto = req.locals.entity;
     res.status(200).json(auto);
 };
 
@@ -32,18 +29,8 @@ const edit = (req: Request, res: Response) => {
 };
 //ADD
 const add = (req: Request, res: Response) => {
-    if (!validaciones.sonDatosValidosDeAuto(req.body)) {
-        res.status(400);
-        res.json('Campos Invalido');
-    } else {
-        const autoAgregado = autoService.agregaAuto(req.body);
-        if (!autoAgregado) {
-            res.status(400);
-            res.json('Error al Cargar Auto');
-        }
-        res.status(200);
-        res.json(`Se agrego el auto con patente ${autoAgregado!.patente}`);
-    }
+    const nuevoAuto = autoService.agregaAuto(req.locals.entity);
+    res.status(200).json(nuevoAuto);
 };
 //DELETES
 const delet = (req: Request, res: Response) => {

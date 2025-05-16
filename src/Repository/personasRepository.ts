@@ -15,13 +15,7 @@ const personaConId = (idPersona: string) => {
 };
 
 const agregarPersona = (personaNueva: Persona) => {
-    try {
-        personasDB.listaPersonas.push(personaNueva);
-    } catch {
-        //Aca Manejaria Error..
-        console.log('No se puso Cargar');
-        return false;
-    }
+    personasDB.listaPersonas.push(personaNueva);
 };
 const agregarAuto = (idPersona: string, auto: Auto) => {
     const persona = personasDB.listaPersonas.find((p) => p.id === idPersona);

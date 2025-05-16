@@ -32,14 +32,17 @@ const agregaAuto = (autoNuevo: AutoDto) => {
         img: Math.floor(Math.random() * 100).toString()
     };
     //Verifico que exista el auto
-    if (autoRepository.idDeAutoConPatente(auto.patente) === undefined) {
+    if (autoRepository.idDeAutoConPatente(auto.patente)) {
+        throw 'Error - Ya hay un auto con esa patente';
+    } else {
         const agregadoAPersona = personaService.agregarAutoAPersona(auto); //Se lo agrega a la Persona
-        if (agregadoAPersona) {
-            autoRepository.agregaAuto(auto); // Agrego a lista Gral.
-            const autoAgregado = autoRepository.autoConPatente(auto.patente);
-            const autoDto = aAutoDto(autoAgregado!);
-            return autoDto;
+        if (!agregadoAPersona) {
+            throw 'Error - No se encuentra registrado el DNI del Dueño';
         }
+        autoRepository.agregaAuto(auto); // Agrego a lista Gral.
+        const autoAgregado = autoRepository.autoConPatente(auto.patente);
+        const autoDto = aAutoDto(autoAgregado!);
+        return autoDto;
     }
 };
 

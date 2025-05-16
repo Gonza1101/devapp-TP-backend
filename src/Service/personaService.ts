@@ -9,11 +9,10 @@ import autoService from './autoService';
 
 const listadoDePersonas = () => {
     const lista = personasRepository.listadoPersonas();
-    return {
-        personas: lista.map((persona) => {
-            return aPersonaReq(persona);
-        })
-    };
+    const personasDto = lista.map((persona) => {
+        return aPersonaDto(persona);
+    });
+    return personasDto;
 };
 
 const listaDeAutosDePersonaConDni = (dni: string) => {
@@ -26,14 +25,16 @@ const listaDeAutosDePersonaConDni = (dni: string) => {
 
 const personaConId = (idPersona: string) => {
     const persona = personasRepository.personaConId(idPersona);
-    if (persona) {
-        return aPersonaDto(persona);
+    if (!persona) {
+        throw `Error - Persona No Existe`;
     }
-    return undefined;
+    return aPersonaDto(persona);
 };
 
 const agregarPersona = (personaNueva: PersonaDto) => {
-    if (!personasRepository.personaConDni(personaNueva.dni!)) {
+    if (personasRepository.personaConDni(personaNueva.dni!)) {
+        throw 'Error, El dni ya se encuentra registrado';
+    } else {
         const persona: Persona = {
             id: randomUUID(),
             nombre: personaNueva.nombre!,
@@ -46,26 +47,15 @@ const agregarPersona = (personaNueva: PersonaDto) => {
             autos: new Array<Auto>()
         };
         personasRepository.agregarPersona(persona);
-        return personasRepository.personaConDni(persona.dni);
+        return aPersonaDto(persona);
     }
-    return undefined;
 };
 
-const modificaPersona = (idPersona: string, datosNuevos: PersonaDto) => {
-    const persona = personasRepository.personaConId(idPersona);
-    // console.log('Persona A Modificar');
-    // console.log(personasAModificar);
-    // console.log('Persona para Modificar');
-    // console.log(datosNuevos);
-    if (persona) {
-        const personaAEditar = aPersonaDto(persona);
-        const personaModificada = aPersona({ ...personaAEditar, ...datosNuevos });
-        personasRepository.eliminaPersona(idPersona);
-        personasRepository.agregarPersona(personaModificada);
-        // console.log(personaModificada);
-        return aPersonaDto(personaModificada);
-    }
-    return undefined;
+const modificaPersona = (personaDTO: PersonaDto) => {
+    const personaModificada = aPersona(personaDTO);
+    personasRepository.eliminaPersona(personaDTO.id!);
+    personasRepository.agregarPersona(personaModificada);
+    return aPersonaDto(personaModificada);
 };
 
 const eliminarPersonaConId = (idPersona: string) => {
