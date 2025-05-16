@@ -8,64 +8,37 @@
 // Importamos nuestras dependencias
 import express from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
+// import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import process from 'process';
-import personaController from './Controller/personaController';
-import autoController from './Controller/autoController';
+import { ResponseInterceptor, ResponseSender } from './Middleware/ResponseInterceptor';
+import { RequestWithLocals } from './Middleware/RequestWithLocals';
+import { PersonaRouters } from './Routers/PersonaRouters';
+import { AutoRouters } from './Routers/AutoRouters';
 // Creamos nuestra app express
 const app = express();
 // Leemos el puerto de las variables de entorno, si no está, usamos uno por default
 const port = process.env.PORT || 9000;
 // Configuramos los plugins
-// Más adelante intentaremos entender mejor cómo funcionan estos plugins
-app.use(helmet());
-app.use(bodyParser.json());
 
+// MIDDLEWARE EXTERNOS *******
 app.use(cors());
-// Mis endpoints van acá
-app.get('/', (req, res) => {
-    res.json('Llegaste');
-});
-//BROWSE -
-app.get('/personas', (req, res) => {
-    personaController.browser(req, res);
-});
-app.get('/autos', (req, res) => {
-    autoController.browser(req, res);
-});
-
-// READ -
-app.get('/persona/:id', (req, res) => {
-    personaController.read(req, res);
-});
-app.get('/auto/:id', (req, res) => {
-    autoController.read(req, res);
-});
-// EDIT -
-app.put('/persona/:id', (req, res) => {
-    personaController.edit(req, res);
-});
-app.put('/auto/:id', (req, res) => {
-    autoController.edit(req, res);
-});
-
-// ADD -
-app.post('/persona', (req, res) => {
-    personaController.add(req, res);
-});
-app.post('/auto', (req, res) => {
-    autoController.add(req, res);
-});
-//PATCH -
-app.patch('/persona/:idPersona', (req, res) => {
-    personaController.eliminaAutoAPersona(req, res);
-});
-//DELETE -
-app.delete('/persona/:id', (req, res) => {
-    personaController.delet(req, res);
-});
-
+app.use(helmet());
+// app.use(bodyParser.json());
+app.use(express.json());
+// MIDDLEWARE ARMADOS POR MI (reza Malena) *******
+app.use(ResponseInterceptor); //config response
+app.use(RequestWithLocals); //config request
+//ahora si puedo trabajar con mis endpoints
+// MIS ENDPOINTS ****
+// app.get('/', (req, res) => {
+//     res.json('Llegaste');
+// });
+app.use('/persona', PersonaRouters());
+app.use('/auto', AutoRouters());
+//TODO aca va el middleware de manejo de error
+//Mando todo ya definido
+app.use(ResponseSender);
 // Levantamos el servidor en el puerto que configuramos
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

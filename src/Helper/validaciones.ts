@@ -1,5 +1,5 @@
-import { AutoDto } from '../DTO/autoDto';
-import { PersonaDto } from '../DTO/personaDto';
+import { AutoDto } from '../DTO/AutoDto';
+import { PersonaDto } from '../DTO/PersonaDto';
 
 const esDatoValido = (dato: unknown, tipo: string) => {
     return typeof dato === tipo || dato === undefined;

@@ -1,10 +1,10 @@
-import { aAutoDto, aAutoReq } from '../DTO/autoDto';
+import { aAutoDto, aAutoReq } from '../DTO/AutoDto';
 import { Auto } from '../Model/Auto';
-import { aAuto } from '../DTO/autoDto';
-import { AutoDto } from '../DTO/autoDto';
-import autoRepository from '../Repository/autoRepository';
-import personasRepository from '../Repository/personasRepository';
-import personaService from './personaService';
+import { aAuto } from '../DTO/AutoDto';
+import { AutoDto } from '../DTO/AutoDto';
+import autoRepository from '../Repository/AutoRepository';
+import personasRepository from '../Repository/PersonasRepository';
+import personaService from './PersonaService';
 import { randomUUID } from 'crypto';
 
 const listado = () => {
@@ -32,40 +32,36 @@ const agregaAuto = (autoNuevo: AutoDto) => {
         img: Math.floor(Math.random() * 100).toString()
     };
     //Verifico que exista el auto
-    if (autoRepository.idDeAutoConPatente(auto.patente) === undefined) {
-        const agregadoAPersona = personaService.agregarAutoAPersona(auto); //Se lo agrega a la Persona
-        if (agregadoAPersona) {
-            autoRepository.agregaAuto(auto); // Agrego a lista Gral.
-            const autoAgregado = autoRepository.autoConPatente(auto.patente);
-            const autoDto = aAutoDto(autoAgregado!);
-            return autoDto;
-        }
-    }
-};
-
-const modificaAuto = (id: string, autoEdit: AutoDto) => {
-    const auto = autoRepository.autoConId(id);
-    const dueño = personasRepository.personaConDni(autoEdit.idDueño!);
-    if (auto && dueño) {
-        const autoModificado = { ...aAutoDto(auto), ...autoEdit };
-        //edito la lista general de Autos
-        autoRepository.borraAuto(auto.id!); //Borro de la lista De Autos Gral.
-        autoRepository.agregaAuto(aAuto(autoModificado));
-        //Edito la lista particular del Dueño
-        personaService.eliminarAutodePersona(dueño.id!, autoModificado); //Borro de la lista de la persona particuar.
-        // TODO error si no existe el auto en la persona
-        personasRepository.agregarAuto(dueño.id, aAuto(autoModificado));
-        return autoModificado;
+    if (autoRepository.idDeAutoConPatente(auto.patente)) {
+        throw 'Error - Ya hay un auto con esa patente';
     } else {
-        return undefined;
+        const agregadoAPersona = personaService.agregarAutoAPersona(auto); //Se lo agrega a la Persona
+        if (!agregadoAPersona) {
+            throw 'Error - No se encuentra registrado el DNI del Dueño';
+        }
+        autoRepository.agregaAuto(auto); // Agrego a lista Gral.
+        const autoAgregado = autoRepository.autoConPatente(auto.patente);
+        const autoDto = aAutoDto(autoAgregado!);
+        return autoDto;
     }
 };
 
-const eliminaAuto = (id: string) => {
-    if (autoRepository.autoConId(id)) {
-        return autoRepository.borraAuto(id).map((auto) => aAutoReq(auto));
+const modificaAuto = (autoEdit: AutoDto) => {
+    const dueño = personasRepository.personaConDni(autoEdit.idDueño!);
+    if (!dueño) {
+        throw 'Error - No Hay Dueño con El auto';
     }
-    return undefined;
+    autoRepository.borraAuto(autoEdit.id!); //Borro de la lista De Autos Gral.
+    autoRepository.agregaAuto(aAuto(autoEdit));
+    //Edito la lista particular del Dueño
+    personaService.eliminarAutodePersona(dueño!.id, autoEdit); //Borro de la lista de la persona particuar.
+    // TODO error si no existe el auto en la persona
+    personasRepository.agregarAuto(dueño!.id, aAuto(autoEdit));
+    return autoEdit;
+};
+
+const eliminaAuto = (auto: AutoDto) => {
+    return autoRepository.borraAuto(auto.id!).map((auto) => aAutoReq(auto));
 };
 
 export default { listado, autoConId, modificaAuto, agregaAuto, eliminaAuto };

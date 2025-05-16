@@ -1,19 +1,18 @@
-import { aAutoReq, AutoDto } from '../DTO/autoDto';
-import { aPersona, aPersonaDto, aPersonaReq } from '../DTO/personaDto';
+import { aAutoDto, aAutoReq, AutoDto } from '../DTO/AutoDto';
+import { aPersona, aPersonaDto, aPersonaReq } from '../DTO/PersonaDto';
 import { Persona } from '../Model/Persona';
 import { Auto } from '../Model/Auto';
-import { PersonaDto } from '../DTO/personaDto';
-import personasRepository from '../Repository/personasRepository';
+import { PersonaDto } from '../DTO/PersonaDto';
+import personasRepository from '../Repository/PersonasRepository';
 import { randomUUID } from 'crypto';
-import autoService from './autoService';
+import autoService from './AutoService';
 
 const listadoDePersonas = () => {
     const lista = personasRepository.listadoPersonas();
-    return {
-        personas: lista.map((persona) => {
-            return aPersonaReq(persona);
-        })
-    };
+    const personasDto = lista.map((persona) => {
+        return aPersonaDto(persona);
+    });
+    return personasDto;
 };
 
 const listaDeAutosDePersonaConDni = (dni: string) => {
@@ -26,14 +25,16 @@ const listaDeAutosDePersonaConDni = (dni: string) => {
 
 const personaConId = (idPersona: string) => {
     const persona = personasRepository.personaConId(idPersona);
-    if (persona) {
-        return aPersonaDto(persona);
+    if (!persona) {
+        throw `Error - Persona No Existe`;
     }
-    return undefined;
+    return aPersonaDto(persona);
 };
 
 const agregarPersona = (personaNueva: PersonaDto) => {
-    if (!personasRepository.personaConDni(personaNueva.dni!)) {
+    if (personasRepository.personaConDni(personaNueva.dni!)) {
+        throw 'Error, El dni ya se encuentra registrado';
+    } else {
         const persona: Persona = {
             id: randomUUID(),
             nombre: personaNueva.nombre!,
@@ -46,33 +47,22 @@ const agregarPersona = (personaNueva: PersonaDto) => {
             autos: new Array<Auto>()
         };
         personasRepository.agregarPersona(persona);
-        return personasRepository.personaConDni(persona.dni);
+        return aPersonaDto(persona);
     }
-    return undefined;
 };
 
-const modificaPersona = (idPersona: string, datosNuevos: PersonaDto) => {
-    const persona = personasRepository.personaConId(idPersona);
-    // console.log('Persona A Modificar');
-    // console.log(personasAModificar);
-    // console.log('Persona para Modificar');
-    // console.log(datosNuevos);
-    if (persona) {
-        const personaAEditar = aPersonaDto(persona);
-        const personaModificada = aPersona({ ...personaAEditar, ...datosNuevos });
-        personasRepository.eliminaPersona(idPersona);
-        personasRepository.agregarPersona(personaModificada);
-        // console.log(personaModificada);
-        return aPersonaDto(personaModificada);
-    }
-    return undefined;
+const modificaPersona = (personaDTO: PersonaDto) => {
+    const personaModificada = aPersona(personaDTO);
+    personasRepository.eliminaPersona(personaDTO.id!);
+    personasRepository.agregarPersona(personaModificada);
+    return aPersonaDto(personaModificada);
 };
 
 const eliminarPersonaConId = (idPersona: string) => {
     const persona = personasRepository.personaConId(idPersona);
     if (persona) {
         //elimino los auto de la lista gral.
-        persona.autos.map((a) => autoService.eliminaAuto(a.id));
+        persona.autos.map((a) => autoService.eliminaAuto(aAutoDto(a)));
         //elimino la persona
         return personasRepository.eliminaPersona(idPersona).map((p) => aPersonaReq(p));
     }
