@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import personaService from '../Service/personaService';
-import validaciones from '../Helper/validaciones';
+import personaService from '../Service/PersonaService';
+import validaciones from '../Helper/Validaciones';
 
-const fetchPersonaByParamid = (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
+const fetchPersonaByParamid = (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
     const persona = personaService.personaConId(id);
     req.locals.entity = persona;

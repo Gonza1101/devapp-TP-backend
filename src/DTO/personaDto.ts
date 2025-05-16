@@ -1,6 +1,6 @@
 import { Genero } from '../Model/Genero';
 import { Persona } from '../Model/Persona';
-import { aAuto, aAutoDto, aAutoReq, AutoDto } from './autoDto';
+import { aAuto, aAutoDto, aAutoReq, AutoDto } from './AutoDto';
 interface PersonaDto {
     id?: string;
     nombre?: string;

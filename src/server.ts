@@ -13,8 +13,8 @@ import helmet from 'helmet';
 import process from 'process';
 import { ResponseInterceptor, ResponseSender } from './Middleware/ResponseInterceptor';
 import { RequestWithLocals } from './Middleware/RequestWithLocals';
-import { PersonaRouters } from './Routers/personaRouters';
-import { AutoRouters } from './Routers/autoRouters';
+import { PersonaRouters } from './Routers/PersonaRouters';
+import { AutoRouters } from './Routers/AutoRouters';
 // Creamos nuestra app express
 const app = express();
 // Leemos el puerto de las variables de entorno, si no está, usamos uno por default
@@ -31,9 +31,9 @@ app.use(ResponseInterceptor); //config response
 app.use(RequestWithLocals); //config request
 //ahora si puedo trabajar con mis endpoints
 // MIS ENDPOINTS ****
-app.get('/', (req, res) => {
-    res.json('Llegaste');
-});
+// app.get('/', (req, res) => {
+//     res.json('Llegaste');
+// });
 app.use('/persona', PersonaRouters());
 app.use('/auto', AutoRouters());
 //TODO aca va el middleware de manejo de error

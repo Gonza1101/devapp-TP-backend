@@ -1,4 +1,4 @@
-import autoDB from '../DataBase/autoDB';
+import autoDB from '../DataBase/AutoDB';
 import { Auto } from '../Model/Auto';
 
 const listadoDeAuto = () => {

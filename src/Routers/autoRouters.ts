@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import autoController from '../Controller/autoController';
+import autoController from '../Controller/AutoController';
 import AutoMiddleware from '../Middleware/AutoMiddleware';
 
 export const AutoRouters = () => {
@@ -16,10 +16,11 @@ export const AutoRouters = () => {
     //AutoEditar
     router.put('/:id', AutoMiddleware.fecthAutoByParamId.bind(AutoMiddleware));
     router.put('/:id', AutoMiddleware.mergePersonaWithBody.bind(AutoMiddleware));
+    router.put('/:id', AutoMiddleware.validateAuto.bind(AutoMiddleware));
     router.put('/:id', autoController.edit.bind(autoController));
     //AutoEliminar
-    // router.delete('/:id', AutoMiddleware.fecthAutoByParamId.bind(AutoMiddleware));
-    // router.delete('/:id', autoController.delet.bind(autoController));
+    router.delete('/:id', AutoMiddleware.fecthAutoByParamId.bind(AutoMiddleware));
+    router.delete('/:id', autoController.delet.bind(autoController));
 
     return router;
 };

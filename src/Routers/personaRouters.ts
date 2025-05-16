@@ -1,4 +1,4 @@
-import personaController from '../Controller/personaController';
+import personaController from '../Controller/PersonaController';
 import { Router } from 'express';
 import PersonaMiddleware from '../Middleware/PersonaMiddleware';
 

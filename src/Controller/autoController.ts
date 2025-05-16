@@ -1,46 +1,35 @@
-import { Request, Response } from 'express';
-import autoService from '../Service/autoService';
-import validaciones from '../Helper/validaciones';
+import { NextFunction, Request, Response } from 'express';
+import autoService from '../Service/AutoService';
 
 //BROWSER
-const browser = (req: Request, res: Response) => {
+const browser = (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json(autoService.listado());
+    next();
 };
 //READ
-const read = (req: Request, res: Response) => {
+const read = (req: Request, res: Response, next: NextFunction) => {
     const auto = req.locals.entity;
     res.status(200).json(auto);
+    next();
 };
 
 //EDIT
-const edit = (req: Request, res: Response) => {
-    if (!validaciones.sonDatosValidosDeAuto(req.body)) {
-        res.status(400).json('Clasico Error de type');
-    } else {
-        const autoEditado = autoService.modificaAuto(req.params.id, req.body);
-        if (autoEditado === undefined) {
-            res.status(404);
-            res.json('Auto invalido para su modificacion');
-        } else {
-            res.status(200);
-            res.json(autoEditado);
-        }
-    }
+const edit = (req: Request, res: Response, next: NextFunction) => {
+    const autoEditado = autoService.modificaAuto(req.locals.entity);
+    res.status(200).json(autoEditado);
+    next();
 };
 //ADD
-const add = (req: Request, res: Response) => {
+const add = (req: Request, res: Response, next: NextFunction) => {
     const nuevoAuto = autoService.agregaAuto(req.locals.entity);
     res.status(200).json(nuevoAuto);
+    next();
 };
-//DELETES
-const delet = (req: Request, res: Response) => {
-    const eliminado = autoService.eliminaAuto(req.params.id);
-    if (!eliminado) {
-        res.status(404);
-        res.json('No existe auto para ser eliminado');
-    }
-    res.status(200);
-    res.json(eliminado);
+//DELETE
+const delet = (req: Request, res: Response, next: NextFunction) => {
+    const eliminado = autoService.eliminaAuto(req.locals.entity);
+    res.status(200).json(eliminado);
+    next();
 };
 
 export default { browser, read, edit, add, delet };
