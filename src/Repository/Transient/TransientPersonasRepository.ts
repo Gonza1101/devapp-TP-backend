@@ -1,6 +1,6 @@
-import personasDB from '../DataBase/PersonasDB';
-import { Persona } from '../Model/Persona';
-import { Auto } from '../Model/Auto';
+import personasDB from '../../DataBase/Transient/personasDB';
+import { Persona } from '../../Model/Persona';
+import { Auto } from '../../Model/Auto';
 
 const listadoPersonas = () => {
     return personasDB.listaPersonas;
