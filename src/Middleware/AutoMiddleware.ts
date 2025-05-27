@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import autoService from '../Service/AutoService';
 import validaciones from '../Helper/Validaciones';
 
-const fecthAutoByParamId = (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
+const fecthAutoByParamId = async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
     const id = req.params.id;
-    const auto = autoService.autoConId(id);
+    const auto = await autoService.autoConId(id);
     req.locals.entity = auto;
     next();
 };
