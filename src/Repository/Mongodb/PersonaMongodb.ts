@@ -1,5 +1,6 @@
 import { Persona } from '../../Model/Persona';
 import { closeMongodb, ConnectMongodb } from '../../DataBase/ConnectMongodb';
+import { Auto } from '../../Model/Auto';
 
 export const PersonaMongodbRepository = {
     listadoPersona: async (): Promise<Persona[]> => {
@@ -24,5 +25,10 @@ export const PersonaMongodbRepository = {
         const db = await ConnectMongodb();
         const personas = db.collection<Persona>('persona');
         personas.insertOne(persona);
+    },
+    agregarAuto: async (idPersona: string, auto: Auto) => {
+        const db = await ConnectMongodb();
+        const persona= db.collection<Persona>('persona').findOne({ idpersona: idPersona });
+        persona.
     }
 };

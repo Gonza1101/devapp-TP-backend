@@ -36,7 +36,7 @@ const agregarPersona = (personaNueva: PersonaDto) => {
         throw 'Error, El dni ya se encuentra registrado';
     } else {
         const persona: Persona = {
-            id: randomUUID(),
+            _id: randomUUID(),
             nombre: personaNueva.nombre!,
             apellido: personaNueva.apellido!,
             dni: personaNueva.dni!,
@@ -69,7 +69,7 @@ const eliminarPersonaConId = (idPersona: string) => {
     return undefined;
 };
 const agregarAutoAPersona = (auto: Auto) => {
-    const persona = personasRepository.personaConId(auto.idDueño);
+    const persona = personasRepository.personaConId(auto.idOwner);
     if (persona !== undefined) {
         personasRepository.agregarAuto(persona.id, auto);
         return true;

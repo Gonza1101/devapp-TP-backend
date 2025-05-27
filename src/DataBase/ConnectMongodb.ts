@@ -1,7 +1,7 @@
 import { Db, MongoClient } from 'mongodb';
 
 const uri = 'mongodb://localhost:'; // URL de conexión a tu base de datos
-const dbNombre = 'DevAppTP'; // Nombre de tu base de datos
+const dbNombre = 'devApp'; // Nombre de tu base de datos
 const client = new MongoClient(uri);
 export const ConnectMongodb = async () => {
     await client.connect();

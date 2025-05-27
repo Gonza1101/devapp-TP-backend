@@ -2,7 +2,7 @@ import { aAutoDto, aAutoReq } from '../DTO/AutoDto';
 import { Auto } from '../Model/Auto';
 import { aAuto } from '../DTO/AutoDto';
 import { AutoDto } from '../DTO/AutoDto';
-import autoRepository from '../Repository/AutoRepository';
+import autoRepository from '../../Repository/AutoRepository';
 import personasRepository from '../Repository/PersonasRepository';
 import personaService from './PersonaService';
 import { randomUUID } from 'crypto';
@@ -20,8 +20,8 @@ const autoConId = (id: string) => {
 const agregaAuto = (autoNuevo: AutoDto) => {
     // console.log(autoNuevo);
     const auto: Auto = {
-        id: randomUUID(),
-        idDueño: autoNuevo.idDueño!,
+        _id: randomUUID(),
+        idOwner: autoNuevo.idOwner!,
         marca: autoNuevo.marca!,
         modelo: autoNuevo.modelo!,
         anio: parseInt(autoNuevo.anio!),

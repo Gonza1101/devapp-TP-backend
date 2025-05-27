@@ -1,4 +1,4 @@
-import personasDB from '../../DataBase/Transient/personasDB';
+import personasDB from '../../DataBase/Transient/PersonasDB';
 import { Persona } from '../../Model/Persona';
 import { Auto } from '../../Model/Auto';
 

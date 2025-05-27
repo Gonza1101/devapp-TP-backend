@@ -1,7 +1,7 @@
 import { Auto } from '../Model/Auto';
 interface AutoDto {
     id?: string;
-    idDueño?: string;
+    idOwner?: string;
     marca?: string;
     modelo?: string;
     anio?: string;
@@ -14,8 +14,8 @@ interface AutoDto {
 
 const aAutoDto = (auto: Auto) => {
     const autoDto: AutoDto = {
-        id: auto.id,
-        idDueño: auto.idDueño,
+        id: auto._id,
+        idOwner: auto.idOwner,
         marca: auto.marca,
         modelo: auto.modelo,
         anio: auto.anio.toString(),
@@ -30,7 +30,7 @@ const aAutoDto = (auto: Auto) => {
 
 const aAutoReq = (auto: Auto) => {
     const autoReq: AutoDto = {
-        id: auto.id,
+        id: auto._id,
         marca: auto.marca,
         modelo: auto.modelo,
         patente: auto.patente,
@@ -41,8 +41,8 @@ const aAutoReq = (auto: Auto) => {
 
 const aAuto = (autoDto: AutoDto) => {
     const auto: Auto = {
-        id: autoDto.id!,
-        idDueño: autoDto.idDueño!,
+        _id: autoDto.id!,
+        idOwner: autoDto.idOwner!,
         marca: autoDto.marca!,
         modelo: autoDto.modelo!,
         anio: parseInt(autoDto.anio!),

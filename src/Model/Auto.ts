@@ -1,6 +1,6 @@
 export interface Auto {
-    id: string;
-    idDueño: string;
+    _id: string;
+    idOwner: string;
     marca: string;
     modelo: string;
     anio: number;

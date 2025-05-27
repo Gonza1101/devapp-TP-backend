@@ -15,7 +15,7 @@ interface PersonaDto {
 
 const aPersonaDto = (persona: Persona) => {
     const personaDto: PersonaDto = {
-        id: persona.id,
+        id: persona._id,
         nombre: persona.nombre,
         apellido: persona.apellido,
         dni: persona.dni,
@@ -32,7 +32,7 @@ const aPersonaDto = (persona: Persona) => {
 
 const aPersonaReq = (persona: Persona) => {
     const personaReq: PersonaDto = {
-        id: persona.id,
+        id: persona._id,
         dni: persona.dni,
         nombre: persona.nombre,
         apellido: persona.apellido,
@@ -50,7 +50,7 @@ const aPersona = (personaDto: PersonaDto) => {
         dni: personaDto.dni!,
         fechaNacimiento: new Date(personaDto.fechaNacimiento!),
         genero: personaDto.genero!,
-        id: personaDto.id!,
+        _id: personaDto.id!,
         img: personaDto.img!,
         nombre: personaDto.nombre!,
         esDonante: personaDto.esDonante,

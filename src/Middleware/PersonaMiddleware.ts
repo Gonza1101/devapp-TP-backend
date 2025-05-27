@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import personaService from '../Service/PersonaService';
-import validaciones from '../Helper/validaciones';
+import validaciones from '../Helper/Validaciones';
 
 const fetchPersonaByParamid = (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
