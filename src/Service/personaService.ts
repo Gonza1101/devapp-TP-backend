@@ -1,38 +1,39 @@
 import { aAutoDto, aAutoReq, AutoDto } from '../DTO/AutoDto';
-import { aPersona, aPersonaDto, aPersonaReq } from '../DTO/PersonaDto';
+import { aPersona, aPersonaDto } from '../DTO/PersonaDto';
 import { Persona } from '../Model/Persona';
 import { Auto } from '../Model/Auto';
 import { PersonaDto } from '../DTO/PersonaDto';
-import personasRepository from '../Repository/PersonasRepository';
 import { randomUUID } from 'crypto';
 import autoService from './AutoService';
+import RepositoryConfig from '../Repository/RepositoryConfig';
 
-const listadoDePersonas = () => {
-    const lista = personasRepository.listadoPersonas();
+const personaRepository = RepositoryConfig.PersonaRepository();
+
+const listadoDePersonas = async () => {
+    const lista = await personaRepository!.listadoPersona();
     const personasDto = lista.map((persona) => {
         return aPersonaDto(persona);
     });
     return personasDto;
 };
 
-const listaDeAutosDePersonaConDni = (dni: string) => {
-    return {
-        autos: personasRepository.personaConDni(dni)?.autos.map((auto) => {
-            return aAutoReq(auto);
-        })
-    };
+const listaDeAutosDePersonaConDni = async (dni: string) => {
+    const persona = await personaRepository!.personaConDni(dni);
+    const autos = persona!.autos.map((a) => aAutoReq(a));
+    return autos;
 };
 
-const personaConId = (idPersona: string) => {
-    const persona = personasRepository.personaConId(idPersona);
+const personaConId = async (idPersona: string) => {
+    const persona = await personaRepository!.personaConId(idPersona);
     if (!persona) {
         throw `Error - Persona No Existe`;
     }
     return aPersonaDto(persona);
 };
 
-const agregarPersona = (personaNueva: PersonaDto) => {
-    if (personasRepository.personaConDni(personaNueva.dni!)) {
+const agregarPersona = async (personaNueva: PersonaDto) => {
+    const persona = await personaConId(personaNueva.dni!);
+    if (persona) {
         throw 'Error, El dni ya se encuentra registrado';
     } else {
         const persona: Persona = {
@@ -46,45 +47,45 @@ const agregarPersona = (personaNueva: PersonaDto) => {
             img: personaNueva.img!,
             autos: new Array<Auto>()
         };
-        personasRepository.agregarPersona(persona);
+        await personaRepository!.agregarPersona(persona);
         return aPersonaDto(persona);
     }
 };
 
-const modificaPersona = (personaDTO: PersonaDto) => {
+const modificaPersona = async (personaDTO: PersonaDto) => {
     const personaModificada = aPersona(personaDTO);
-    personasRepository.eliminaPersona(personaDTO.id!);
-    personasRepository.agregarPersona(personaModificada);
+    await personaRepository!.eliminaPersona(personaDTO.id!);
+    await personaRepository!.agregarPersona(personaModificada);
     return aPersonaDto(personaModificada);
 };
 
-const eliminarPersonaConId = (idPersona: string) => {
-    const persona = personasRepository.personaConId(idPersona);
+const eliminarPersonaConId = async (idPersona: string) => {
+    const persona = await personaRepository!.personaConId(idPersona);
     if (persona) {
         //elimino los auto de la lista gral.
         persona.autos.map((a) => autoService.eliminaAuto(aAutoDto(a)));
         //elimino la persona
-        return personasRepository.eliminaPersona(idPersona).map((p) => aPersonaReq(p));
+        return await personaRepository!.eliminaPersona(idPersona);
     }
     return undefined;
 };
-const agregarAutoAPersona = (auto: Auto) => {
-    const persona = personasRepository.personaConId(auto.idOwner);
-    if (persona !== undefined) {
-        personasRepository.agregarAuto(persona.id, auto);
+const agregarAutoAPersona = async (auto: Auto) => {
+    const persona = await personaRepository!.personaConId(auto.idOwner);
+    if (persona) {
+        personaRepository!.agregarAuto(persona!._id, auto);
         return true;
     }
     return false;
 };
 
-const eliminarAutodePersona = (idPersona: string, auto: AutoDto) => {
-    const persona = personasRepository.personaConId(idPersona);
-    if (persona !== undefined) {
-        const autoIndex = persona.autos.findIndex((a) => a.id === auto.id);
+const eliminarAutodePersona = async (idPersona: string, auto: AutoDto) => {
+    const persona = await personaRepository!.personaConId(idPersona);
+    if (persona) {
+        const autoIndex = persona.autos.findIndex((a) => a._id === auto.id);
         if (autoIndex !== undefined) {
             persona.autos.splice(autoIndex, 1);
-            personasRepository.eliminaPersona(persona.id);
-            personasRepository.agregarPersona(persona);
+            personaRepository!.eliminaPersona(persona._id);
+            personaRepository!.agregarPersona(persona);
             return persona;
         }
     }
