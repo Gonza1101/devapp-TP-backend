@@ -11,24 +11,24 @@ const personaConDni = (dniPersona: string) => {
 };
 
 const personaConId = (idPersona: string) => {
-    return personasDB.listaPersonas.find((p) => p.id === idPersona);
+    return personasDB.listaPersonas.find((p) => p._id === idPersona);
 };
 
 const agregarPersona = (personaNueva: Persona) => {
     personasDB.listaPersonas.push(personaNueva);
 };
 const agregarAuto = (idPersona: string, auto: Auto) => {
-    const persona = personasDB.listaPersonas.find((p) => p.id === idPersona);
+    const persona = personasDB.listaPersonas.find((p) => p._id === idPersona);
     persona?.autos.push(auto);
 };
 
 const eliminarAuto = (idPersona: string, index: number) => {
-    const persona = personasDB.listaPersonas.find((p) => p.id === idPersona);
+    const persona = personasDB.listaPersonas.find((p) => p._id === idPersona);
     persona?.autos.splice(index, 1);
 };
 
 const eliminaPersona = (idPersona: string) => {
-    const indexPersona = personasDB.listaPersonas.findIndex((p) => p.id === idPersona);
+    const indexPersona = personasDB.listaPersonas.findIndex((p) => p._id === idPersona);
     return personasDB.listaPersonas.splice(indexPersona, 1);
 };
 

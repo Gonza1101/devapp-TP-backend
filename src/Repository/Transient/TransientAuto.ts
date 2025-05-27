@@ -19,8 +19,8 @@ const autoConPatente = (patente: string) => {
 };
 
 const agregaAuto = (auto: Auto) => {
-    console.log('AutoRepository -> agregarAuto');
-    console.log(auto);
+    // console.log('AutoRepository -> agregarAuto');
+    // console.log(auto);
     autoDB.listaAuto.push(auto);
     return `Se agrego auto ${auto.id}`;
 };
