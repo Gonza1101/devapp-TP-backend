@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import autoService from '../Service/AutoService';
-import validaciones from '../Helper/validaciones';
+import validaciones from '../Helper/Validaciones';
 
 const fecthAutoByParamId = (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
     const id = req.params.id;

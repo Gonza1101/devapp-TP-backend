@@ -4,6 +4,7 @@ import { Auto } from '../../Model/Auto';
 
 export const PersonasTransient = {
     listadoPersona: () => {
+        console.log('PersonaTransient');
         const personas = personasDB.listaPersonas;
         return personas;
     },

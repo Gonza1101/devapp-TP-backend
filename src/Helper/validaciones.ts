@@ -35,7 +35,7 @@ const sonDatosValidosDePersona = (persona: PersonaDto) => {
 
 const sonDatosValidosDeAuto = (auto: AutoDto) => {
     return (
-        esDatoValido(auto.idDueño, 'string') &&
+        esDatoValido(auto.idOwner, 'string') &&
         esDatoValido(auto.marca, 'string') &&
         esDatoValido(auto.modelo, 'string') &&
         esDatoValido(auto.anio!, 'number') &&

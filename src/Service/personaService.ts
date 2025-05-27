@@ -10,7 +10,9 @@ import RepositoryConfig from '../Repository/RepositoryConfig';
 const personaRepository = RepositoryConfig.PersonaRepository();
 
 const listadoDePersonas = async () => {
+    console.log('Service');
     const lista = await personaRepository!.listadoPersona();
+    console.log(lista);
     const personasDto = lista.map((persona) => {
         return aPersonaDto(persona);
     });
