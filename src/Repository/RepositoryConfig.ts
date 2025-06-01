@@ -11,7 +11,7 @@ import { PersonasTransient } from './Transient/PersonasTransient';
 const PersonaRepository = () => {
     if (process.env.REPOSITORY === 'transient') {
         //TODO devuelve el repositorio en Memoria;
-        console.log('Repository');
+        //console.log('Repository');
         return PersonasTransient;
     }
     if (process.env.REPOSITORY === 'mongodb') {

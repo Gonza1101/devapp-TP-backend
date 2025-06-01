@@ -7,7 +7,7 @@ const browser = async (req: Request, res: Response, next: NextFunction) => {
     next();
 };
 //READ
-const read = (req: Request, res: Response, next: NextFunction) => {
+const read = async (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json(req.locals.entity);
     next();
 };
@@ -24,7 +24,7 @@ const add = async (req: Request, res: Response, next: NextFunction) => {
     next();
 };
 //DELETE
-//TODO REVISARLO RAROOOOS
+//TODO REVISARLO RAROOOO
 const delet = async (req: Request, res: Response, next: NextFunction) => {
     const eliminado = await personaService.eliminarPersonaConId(req.params.id);
     res.status(200);

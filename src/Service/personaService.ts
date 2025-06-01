@@ -53,11 +53,14 @@ const agregarPersona = async (personaNueva: PersonaDto) => {
         return aPersonaDto(persona);
     }
 };
-
+//TODO La logica
 const modificaPersona = async (personaDTO: PersonaDto) => {
+    console.log('modificaPersona');
     const personaModificada = aPersona(personaDTO);
     await personaRepository!.eliminaPersona(personaDTO.id!);
+    console.log('Persona Eliminada');
     await personaRepository!.agregarPersona(personaModificada);
+    console.log('Persona Agregada');
     return aPersonaDto(personaModificada);
 };
 

@@ -1,12 +1,13 @@
 import { Persona } from '../../Model/Persona';
-import { closeMongodb, ConnectMongodb } from '../../DataBase/ConnectMongodb';
 import { Auto } from '../../Model/Auto';
+import { firebasedb } from '../../DataBase/ConnectFirebase';
+import { collection, getDoc, getDocs } from 'firebase/firestore/lite';
 
 export const PersonaMongodb = {
     listadoPersona: async (): Promise<Persona[]> => {
-        const db = await ConnectMongodb();
-        const personas = await db.collection<Persona>('persona').find({}).toArray();
-        closeMongodb();
+        const personaCol = collection(firebasedb, 'persona');
+        const personaSnapshot = await getDocs(personaCol);
+        const personas = personaSnapshot.docs.map((doc) => doc.data() as Persona);
         return personas;
     },
     personaConDni: async (dni: string): Promise<Persona | null> => {
