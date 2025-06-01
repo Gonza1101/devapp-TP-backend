@@ -34,7 +34,7 @@ export default { listaPersonas };
 //     nombre: 'Gonzalo',
 //     apellido: 'Villalba',
 //     dni: '33423185',
-//     fechaNacimiento: new Date(1987, 11, 13), 
+//     fechaNacimiento: new Date(1987, 11, 13),
 //     genero: 'Masculino',
 //     esDonante: true,
 //     img: '2',
