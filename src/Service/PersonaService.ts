@@ -10,9 +10,7 @@ import RepositoryConfig from '../Repository/RepositoryConfig';
 const personaRepository = RepositoryConfig.PersonaRepository();
 
 const listadoDePersonas = async () => {
-    console.log('Service');
-    const lista = await personaRepository!.listadoPersona();
-    console.log(lista);
+    const lista: Persona[] = await personaRepository!.listadoPersona();
     const personasDto = lista.map((persona) => {
         return aPersonaDto(persona);
     });
@@ -20,7 +18,7 @@ const listadoDePersonas = async () => {
 };
 
 const listaDeAutosDePersonaConDni = async (dni: string) => {
-    const persona = await personaRepository!.personaConDni(dni);
+    const persona: Persona = await personaRepository!.personaConDni(dni);
     const autos = persona!.autos.map((a) => aAutoReq(a));
     return autos;
 };
@@ -55,10 +53,11 @@ const agregarPersona = async (personaNueva: PersonaDto) => {
 };
 
 const modificaPersona = async (personaDTO: PersonaDto) => {
-    const personaModificada = aPersona(personaDTO);
-    await personaRepository!.eliminaPersona(personaDTO.id!);
-    await personaRepository!.agregarPersona(personaModificada);
-    return aPersonaDto(personaModificada);
+    await eliminarPersonaConId(personaDTO.id!);
+    //await personaRepository!.eliminaPersona(personaDTO.id!);
+    await agregarPersona(personaDTO);
+    //await personaRepository!.agregarPersona(personaModificada);
+    return personaDTO;
 };
 
 const eliminarPersonaConId = async (idPersona: string) => {

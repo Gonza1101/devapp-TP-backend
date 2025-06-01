@@ -10,22 +10,21 @@ import { PersonasTransient } from './Transient/PersonasTransient';
 */
 const PersonaRepository = () => {
     if (process.env.REPOSITORY === 'transient') {
-        //TODO devuelve el repositorio en Memoria;
-        console.log('Repository');
+        //devuelve el repositorio en Memoria;
         return PersonasTransient;
     }
     if (process.env.REPOSITORY === 'mongodb') {
-        //TODO devuelve el repositorio a mongo;
+        //devuelve el repositorio a mongo;
         return PersonaMongodb;
     }
 };
 const AutoRepository = () => {
     if (process.env.REPOSITORY === 'transient') {
-        //TODO devuelve el repositorio en Memoria;
+        //devuelve el repositorio en Memoria;
         return AutoTransient;
     }
     if (process.env.REPOSITORY === 'mongodb') {
-        //TODO devuelve el repositorio a mongo;
+        //devuelve el repositorio a mongo;
         return AutoMongodb;
     }
 };

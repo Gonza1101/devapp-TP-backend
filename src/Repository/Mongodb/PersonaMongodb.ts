@@ -47,4 +47,8 @@ export const PersonaMongodb = {
         );
         closeMongodb();
     }
+    // modificarPersona: async (persona: Persona) => {
+    //     const db = await ConnectMongodb();
+    //     db.collection<Persona>('persona').u
+    // }
 };
