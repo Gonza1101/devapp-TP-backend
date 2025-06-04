@@ -53,7 +53,6 @@ const agregarPersona = async (personaNueva: PersonaDto) => {
         return aPersonaDto(persona);
     }
 };
-//TODO La logica
 const modificaPersona = async (personaDTO: PersonaDto) => {
     console.log('modificaPersona');
     const personaModificada = aPersona(personaDTO);
