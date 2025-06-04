@@ -24,7 +24,11 @@ export const PersonaMongodb = {
 
     agregarPersona: async (persona: Persona) => {
         const db = await ConnectMongodb();
-        await db.collection<Persona>('persona').insertOne(persona);
+        try {
+            await db.collection<Persona>('persona').insertOne(persona);
+        } catch (error) {
+            console.log(error);
+        }
         closeMongodb();
     },
     agregarAuto: async (idPersona: string, auto: Auto) => {

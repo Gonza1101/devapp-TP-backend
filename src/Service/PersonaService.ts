@@ -1,11 +1,12 @@
 import { aAutoDto, aAutoReq, AutoDto } from '../DTO/AutoDto';
-import { aPersona, aPersonaDto } from '../DTO/PersonaDto';
+import { aPersonaDto } from '../DTO/PersonaDto';
 import { Persona } from '../Model/Persona';
 import { Auto } from '../Model/Auto';
 import { PersonaDto } from '../DTO/PersonaDto';
 import { randomUUID } from 'crypto';
 import autoService from './AutoService';
 import RepositoryConfig from '../Repository/RepositoryConfig';
+import { console } from 'inspector';
 
 const personaRepository = RepositoryConfig.PersonaRepository();
 
@@ -18,17 +19,19 @@ const listadoDePersonas = async () => {
 };
 
 const listaDeAutosDePersonaConDni = async (dni: string) => {
-    const persona: Persona = await personaRepository!.personaConDni(dni);
+    const persona = await personaRepository!.personaConDni(dni);
     const autos = persona!.autos.map((a) => aAutoReq(a));
     return autos;
 };
 
 const personaConId = async (idPersona: string) => {
-    const persona = await personaRepository!.personaConId(idPersona);
-    if (!persona) {
-        throw `Error - Persona No Existe`;
+    try {
+        const persona = await personaRepository!.personaConId(idPersona);
+        return persona;
+    } catch (error) {
+        console.log(error);
+        return undefined;
     }
-    return aPersonaDto(persona);
 };
 
 const agregarPersona = async (personaNueva: PersonaDto) => {
@@ -47,7 +50,12 @@ const agregarPersona = async (personaNueva: PersonaDto) => {
             img: personaNueva.img!,
             autos: new Array<Auto>()
         };
-        await personaRepository!.agregarPersona(persona);
+        try {
+            await personaRepository!.agregarPersona(persona);
+        } catch (error) {
+            console.log(error);
+            return undefined;
+        }
         return aPersonaDto(persona);
     }
 };
